@@ -48,7 +48,7 @@ static SBN_Status_t End(void *Msg, SBN_Filter_Ctx_t *Context)
             SubSeconds        = CFE_MAKE_BIG32(SubSeconds);
             CCSDS_WR_SEC_HDR_SUBSEC(TlmPktPtr->Sec, SubSeconds);
         } /* end if */
-    }     /* end if */
+    } /* end if */
 
     return SBN_SUCCESS;
 } /* SBN_F_CCSDS_End() */

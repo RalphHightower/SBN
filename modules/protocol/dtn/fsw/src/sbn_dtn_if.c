@@ -113,7 +113,7 @@ int SBN_DTN_Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_t M
     uint8 SendBuf[SBN_MAX_PACKED_MSG_SZ];
 
     SBN_DTN_Peer_t *PeerData = (SBN_DTN_Peer_t *)Peer->ModulePvt;
-    SBN_DTN_Net_t * NetData  = (SBN_DTN_Net_t *)Peer->Net->ModulePvt;
+    SBN_DTN_Net_t  *NetData  = (SBN_DTN_Net_t *)Peer->Net->ModulePvt;
 
     SBN_PackMsg(&SendBuf, MsgSz, MsgType, CFE_PSP_GetProcessorId(), Payload);
 

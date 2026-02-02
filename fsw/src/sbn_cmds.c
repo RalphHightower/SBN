@@ -57,7 +57,7 @@ void SBN_InitializeCounters(void)
             SBN_PeerInterface_t *Peer = &Net->Peers[PeerIdx];
             InitializePeerCounters(Peer);
         } /* end for */
-    }     /* end for */
+    } /* end for */
 } /* end SBN_InitializeCounters */
 
 /************************************************************************/
@@ -88,7 +88,7 @@ static bool VerifyMsgLen(CFE_MSG_Message_t *MsgPtr, uint16 ExpectedLen, const ch
     CFE_MSG_Size_t    ActualLen = 0;
     CFE_MSG_FcnCode_t FcnCode   = 0;
 
-    if(CFE_MSG_GetSize(MsgPtr, &ActualLen) != CFE_SUCCESS)
+    if (CFE_MSG_GetSize(MsgPtr, &ActualLen) != CFE_SUCCESS)
     {
         EVSSendErr(SBN_CMD_EID, "invalid hk message (Name=%s)", MsgName);
         return false;
@@ -96,7 +96,7 @@ static bool VerifyMsgLen(CFE_MSG_Message_t *MsgPtr, uint16 ExpectedLen, const ch
 
     if (ExpectedLen != ActualLen)
     {
-        if(CFE_MSG_GetFcnCode(MsgPtr, &FcnCode) != CFE_SUCCESS)
+        if (CFE_MSG_GetFcnCode(MsgPtr, &FcnCode) != CFE_SUCCESS)
         {
             EVSSendErr(SBN_CMD_EID, "unable to get FcnCode (Name=%s)", MsgName);
             return false;
@@ -264,9 +264,9 @@ static void HKCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendDbg(SBN_CMD_EID, "hk command");
 
-    uint8  HKBuf[SBN_HK_LEN];
+    uint8              HKBuf[SBN_HK_LEN];
     CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t Pack;
+    Pack_t             Pack;
 
     CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HK_TLM_MID), SBN_HK_LEN);
 
@@ -314,9 +314,9 @@ static void HKNetCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendInfo(SBN_CMD_EID, "hk command, net=%d", NetIdx);
 
-    uint8  HKBuf[SBN_HKNET_LEN];
+    uint8              HKBuf[SBN_HKNET_LEN];
     CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t Pack;
+    Pack_t             Pack;
 
     CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID), SBN_HKNET_LEN);
 
@@ -372,9 +372,9 @@ static void HKPeerCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendInfo(SBN_CMD_EID, "hk command, net=%d, peer=%d", NetIdx, PeerIdx);
 
-    uint8  HKBuf[SBN_HKPEER_LEN];
+    uint8              HKBuf[SBN_HKPEER_LEN];
     CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t Pack;
+    Pack_t             Pack;
 
     CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID), SBN_HKPEER_LEN);
 
@@ -416,13 +416,14 @@ static void MySubsCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendInfo(SBN_CMD_EID, "hk subs command");
 
-    uint8  HKBuf[SBN_HKMYSUBS_LEN];
+    uint8              HKBuf[SBN_HKMYSUBS_LEN];
     CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t Pack;
+    Pack_t             Pack;
 
     CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID), SBN_HKMYSUBS_LEN);
 
-    Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HKMYSUBS_LEN - sizeof(CFE_MSG_TelemetryHeader_t), 1);
+    Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HKMYSUBS_LEN - sizeof(CFE_MSG_TelemetryHeader_t),
+              1);
 
     Pack_UInt8(&Pack, SBN_HK_MYSUBS_CC);
     Pack_UInt16(&Pack, SBN.SubCnt);
@@ -452,8 +453,11 @@ static void ReloadTblCmd(CFE_MSG_Message_t *MsgPtr)
     {
         EVSSendInfo(SBN_CMD_EID, "reload tbl command");
         SBN_ReloadConfTbl();
-    } else {
-        EVSSendErr(SBN_CMD_EID, "Recevied tbl reload command, but message was wrong size. This command should only be triggered from the TBL service, itself, and not called directly.");
+    }
+    else
+    {
+        EVSSendErr(SBN_CMD_EID, "Recevied tbl reload command, but message was wrong size. This command should only be "
+                                "triggered from the TBL service, itself, and not called directly.");
     }
     return;
 }
@@ -498,13 +502,14 @@ static void PeerSubsCmd(CFE_MSG_Message_t *MsgPtr)
 
     SBN_PeerInterface_t *Peer = &SBN.Nets[NetIdx].Peers[PeerIdx];
 
-    uint8  HKBuf[SBN_HKPEERSUBS_LEN];
+    uint8              HKBuf[SBN_HKPEERSUBS_LEN];
     CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t Pack;
+    Pack_t             Pack;
 
     CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID), SBN_HKPEERSUBS_LEN);
 
-    Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HKPEERSUBS_LEN - sizeof(CFE_MSG_TelemetryHeader_t), 1);
+    Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HKPEERSUBS_LEN - sizeof(CFE_MSG_TelemetryHeader_t),
+              1);
 
     Pack_UInt8(&Pack, SBN_HK_PEERSUBS_CC);
     Pack_UInt16(&Pack, NetIdx);
@@ -548,7 +553,7 @@ void SBN_HandleCommand(CFE_MSG_Message_t *MsgPtr)
         return;
     } /* end if */
 
-    if(CFE_MSG_GetFcnCode(MsgPtr, &FcnCode) != CFE_SUCCESS)
+    if (CFE_MSG_GetFcnCode(MsgPtr, &FcnCode) != CFE_SUCCESS)
     {
         SBN.CmdErrCnt++;
         EVSSendErr(SBN_CMD_EID, "invalid FcnCode (FcnCode=0x%04X)", FcnCode);

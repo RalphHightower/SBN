@@ -259,7 +259,7 @@ int32 SBN_ParseSPWFileEntry(char *FileEntry, uint32 LineNum, void **EntryAddr)
  * @param  Data SPW interface information
  * @return SBN_OK on success, error code otherwise
  */
-int32 SBN_InitSPWIF(SBN_InterfaceData * Data)
+int32 SBN_InitSPWIF(SBN_InterfaceData *Data)
 {
     int32           Stat;
     SPW_SBNEntry_t *entry = Data->EntryData;
@@ -297,9 +297,9 @@ int32 SBN_InitSPWIF(SBN_InterfaceData * Data)
  * @param ProtoMsgBuf  Protocol message
  * @param DataMsgBuf   Data message
  */
-int32 SBN_SendSPWNetMsg(uint32 MsgType, uint32 MsgSz, SBN_InterfaceData * HostList[], int32 NumHosts,
-                        CFE_SB_SenderId_t * SenderPtr, SBN_InterfaceData * IfData, SBN_NetProtoMsg_t * ProtoMsgBuf,
-                        NetDataUnion * DataMsgBuf)
+int32 SBN_SendSPWNetMsg(uint32 MsgType, uint32 MsgSz, SBN_InterfaceData *HostList[], int32 NumHosts,
+                        CFE_SB_SenderId_t *SenderPtr, SBN_InterfaceData *IfData, SBN_NetProtoMsg_t *ProtoMsgBuf,
+                        NetDataUnion *DataMsgBuf)
 {
     int                status, found = 0;
     SPW_SBNPeerData_t *peer;
@@ -348,7 +348,7 @@ int32 SBN_SendSPWNetMsg(uint32 MsgType, uint32 MsgSz, SBN_InterfaceData * HostLi
     return (status);
 } /* end SBN_SendNetMsg */
 
-int32 SPW_VerifyPeerInterface(SBN_InterfaceData * Peer, SBN_InterfaceData * HostList[], int32 NumHosts)
+int32 SPW_VerifyPeerInterface(SBN_InterfaceData *Peer, SBN_InterfaceData *HostList[], int32 NumHosts)
 {
     int32 HostIdx;
     int32 found;
@@ -376,7 +376,7 @@ int32 SPW_VerifyPeerInterface(SBN_InterfaceData * Peer, SBN_InterfaceData * Host
 /**
  * An SPW host doesn't necessarily need a peer, so this always returns true.
  */
-int32 SPW_VerifyHostInterface(SBN_InterfaceData * Host, SBN_PeerData_t * PeerList, int32 NumPeers)
+int32 SPW_VerifyHostInterface(SBN_InterfaceData *Host, SBN_PeerData_t *PeerList, int32 NumPeers)
 {
     return SBN_VALID;
 }

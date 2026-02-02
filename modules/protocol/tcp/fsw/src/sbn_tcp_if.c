@@ -246,7 +246,8 @@ static SBN_Status_t InitNet(SBN_NetInterface_t *Net)
 
     if (OS_SocketBind(Socket, &NetData->Addr) != OS_SUCCESS)
     {
-        EVSSendErr(SBN_TCP_SOCK_EID, "bind call failed (0x%lx Socket=%ld)", (unsigned long int)NetData, OS_ObjectIdToInteger(NetData->Socket));
+        EVSSendErr(SBN_TCP_SOCK_EID, "bind call failed (0x%lx Socket=%ld)", (unsigned long int)NetData,
+                   OS_ObjectIdToInteger(NetData->Socket));
         return SBN_ERROR;
     }
 
@@ -299,7 +300,7 @@ static void CheckNet(SBN_NetInterface_t *Net)
     for (PeerIdx = 0; PeerIdx < Net->PeerCnt; PeerIdx++)
     {
         SBN_PeerInterface_t *Peer     = &Net->Peers[PeerIdx];
-        SBN_TCP_Peer_t *     PeerData = (SBN_TCP_Peer_t *)Peer->ModulePvt;
+        SBN_TCP_Peer_t      *PeerData = (SBN_TCP_Peer_t *)Peer->ModulePvt;
 
         if (PeerData->ConnectOut && !Peer->Connected)
         {
@@ -340,16 +341,16 @@ static void CheckNet(SBN_NetInterface_t *Net)
 
                     SBN.Connected(Peer);
                 } /* end if */
-            }     /* end if */
-        }         /* end if */
-    }             /* end for */
+            } /* end if */
+        } /* end if */
+    } /* end for */
 } /* end CheckNet() */
 
 static SBN_Status_t Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_t MsgSz, void *Msg)
 {
-    SBN_TCP_Peer_t *    PeerData = (SBN_TCP_Peer_t *)Peer->ModulePvt;
+    SBN_TCP_Peer_t     *PeerData = (SBN_TCP_Peer_t *)Peer->ModulePvt;
     SBN_NetInterface_t *Net      = Peer->Net;
-    SBN_TCP_Net_t *     NetData  = (SBN_TCP_Net_t *)Net->ModulePvt;
+    SBN_TCP_Net_t      *NetData  = (SBN_TCP_Net_t *)Net->ModulePvt;
 
     if (PeerData->Conn == NULL)
     {
@@ -382,12 +383,14 @@ static SBN_Status_t PollPeer(SBN_PeerInterface_t *Peer)
     OS_time_t CurrentTime;
     OS_GetLocalTime(&CurrentTime);
 
-    if (SBN_TCP_PEER_HEARTBEAT > 0 && OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastSend)) > SBN_TCP_PEER_HEARTBEAT)
+    if (SBN_TCP_PEER_HEARTBEAT > 0 &&
+        OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastSend)) > SBN_TCP_PEER_HEARTBEAT)
     {
         Send(Peer, SBN_TCP_HEARTBEAT_MSG, 0, NULL);
     } /* end if */
 
-    if (SBN_TCP_PEER_TIMEOUT > 0 && OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastRecv)) > SBN_TCP_PEER_TIMEOUT)
+    if (SBN_TCP_PEER_TIMEOUT > 0 &&
+        OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastRecv)) > SBN_TCP_PEER_TIMEOUT)
     {
         EVSSendInfo(SBN_TCP_DEBUG_EID, "CPU %d timeout, disconnected", Peer->ProcessorID);
 
@@ -419,7 +422,7 @@ static SBN_Status_t Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN
         {
             OS_SelectFdAdd(&FdSet, NetData->Conns[ConnID].Socket);
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     if (OS_SelectMultiple(&FdSet, NULL, timeout) != OS_SUCCESS)
     {
@@ -468,8 +471,8 @@ static SBN_Status_t Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN
                 else
                 {
                     return SBN_IF_EMPTY; /* wait for the complete header */
-                }                        /* end if */
-            }                            /* end if */
+                } /* end if */
+            } /* end if */
 
             /* only get here if we're recv'd the header and ready for the body */
 
@@ -496,11 +499,12 @@ static SBN_Status_t Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN
                 if (Received < ToRead)
                 {
                     return SBN_IF_EMPTY; /* wait for the complete body */
-                }                        /* end if */
-            }                            /* end if */
+                } /* end if */
+            } /* end if */
 
             /* we have the complete body, decode! */
-            if (SBN.UnpackMsg(&RecvBufs[Conn->BufNum], MsgSzPtr, MsgTypePtr, ProcessorIDPtr, SpacecraftIDPtr, MsgBuf) == false)
+            if (SBN.UnpackMsg(&RecvBufs[Conn->BufNum], MsgSzPtr, MsgTypePtr, ProcessorIDPtr, SpacecraftIDPtr, MsgBuf) ==
+                false)
             {
                 return SBN_ERROR;
             } /* end if */
@@ -526,13 +530,13 @@ static SBN_Status_t Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN
 
                         break;
                     } /* end if */
-                }     /* end for */
-            }         /* end if */
+                } /* end for */
+            } /* end if */
 
             Conn->ReceivingBody = false;
             Conn->RecvSz        = 0;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     return SBN_SUCCESS;
 } /* end Recv() */

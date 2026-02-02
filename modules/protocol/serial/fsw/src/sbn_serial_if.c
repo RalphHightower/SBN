@@ -148,7 +148,7 @@ int SBN_SERIAL_PollPeer(SBN_PeerInterface_t *Peer)
             /* no luck */
             return 0;
         } /* end if */
-    }     /* end if */
+    } /* end if */
 
     OS_time_t CurrentTime;
     OS_GetLocalTime(&CurrentTime);
@@ -206,7 +206,7 @@ int SBN_SERIAL_Recv(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgT
         {
             return SBN_IF_EMPTY;
         } /* end if */
-    }     /* end if */
+    } /* end if */
 
 #ifndef SBN_RECV_TASK
     fd_set         ReadFDs;
@@ -281,8 +281,8 @@ int SBN_SERIAL_Recv(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgT
         else
         {
             return SBN_IF_EMPTY; /* wait for the complete header */
-        }                        /* end if */
-    }                            /* end if */
+        } /* end if */
+    } /* end if */
 
     /* only get here if we're read'd the header and ready for the body */
 
@@ -300,8 +300,8 @@ int SBN_SERIAL_Recv(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgT
         if (Received < ToRead)
         {
             return SBN_IF_EMPTY; /* wait for the complete body */
-        }                        /* end if */
-    }                            /* end if */
+        } /* end if */
+    } /* end if */
 
     /* we have the complete body, decode! */
     if (SBN_UnpackMsg(&RecvBufs[PeerData->BufNum], MsgSzPtr, MsgTypePtr, CpuIDPtr, MsgBuf))

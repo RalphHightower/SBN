@@ -16,7 +16,7 @@
  * limitations under the License.
  ************************************************************************/
 
- #ifndef _sbn_msg_h_
+#ifndef _sbn_msg_h_
 #define _sbn_msg_h_
 
 #include "sbn_msgdefs.h"
@@ -32,21 +32,23 @@
 #define SBN_HK_LEN (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + (sizeof(SBN_HKTlm_t) * 4))
 
 /** @brief CC, SBN_SubCnt_t SubCnt, CFE_SB_MsgId_t Subs[SBN_MAX_SUBS_PER_PEER] */
-#define SBN_HKMYSUBS_LEN \
-    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_SubCnt_t) + SBN_MAX_SUBS_PER_PEER * sizeof(CFE_SB_MsgId_t))
-
-/** @brief CC, NetIdx, PeerIdx, SubCnt, Subs[SBN_MAX_SUBS_PER_PEER] */
-#define SBN_HKPEERSUBS_LEN                                                                                       \
-    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_NetIdx_t) + sizeof(SBN_PeerIdx_t) + sizeof(SBN_SubCnt_t) + \
+#define SBN_HKMYSUBS_LEN                                                        \
+    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_SubCnt_t) + \
      SBN_MAX_SUBS_PER_PEER * sizeof(CFE_SB_MsgId_t))
 
+/** @brief CC, NetIdx, PeerIdx, SubCnt, Subs[SBN_MAX_SUBS_PER_PEER] */
+#define SBN_HKPEERSUBS_LEN                                                                              \
+    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_NetIdx_t) + sizeof(SBN_PeerIdx_t) + \
+     sizeof(SBN_SubCnt_t) + SBN_MAX_SUBS_PER_PEER * sizeof(CFE_SB_MsgId_t))
+
 /** @brief CC, SubCnt, ProcessorID, LastSend, LastRecv, SendCnt, RecvCnt, SendErrCnt, RecvErrCnt */
-#define SBN_HKPEER_LEN                                                                                                \
-    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_SubCnt_t) + sizeof(CFE_ProcessorID_t) + sizeof(OS_time_t) * 2 + \
-     sizeof(SBN_HKTlm_t) * 4)
+#define SBN_HKPEER_LEN                                                                                      \
+    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_SubCnt_t) + sizeof(CFE_ProcessorID_t) + \
+     sizeof(OS_time_t) * 2 + sizeof(SBN_HKTlm_t) * 4)
 
 /** @brief CC, ProtocolID, PeerCnt */
-#define SBN_HKNET_LEN (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_ModuleIdx_t) + sizeof(SBN_PeerIdx_t))
+#define SBN_HKNET_LEN \
+    (sizeof(CFE_MSG_TelemetryHeader_t) + sizeof(uint8) + sizeof(SBN_ModuleIdx_t) + sizeof(SBN_PeerIdx_t))
 
 /**
  * @brief Module status response packet structure
