@@ -33,7 +33,6 @@
 SBN_App_t SBN;
 
 #include <string.h>
-#include "sbn_app.h"
 
 static SBN_Status_t UnloadNets(void);
 
