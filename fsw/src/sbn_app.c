@@ -20,6 +20,7 @@
  ** Include Files
  */
 #include <fcntl.h>
+#include <string.h>
 
 #include "sbn_pack.h"
 #include "sbn_app.h"
@@ -31,8 +32,6 @@
 
 /** \brief SBN global application data, indexed by AppID. */
 SBN_App_t SBN;
-
-#include <string.h>
 
 static SBN_Status_t UnloadNets(void);
 
