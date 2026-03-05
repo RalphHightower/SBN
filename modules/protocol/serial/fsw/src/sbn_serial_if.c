@@ -37,7 +37,10 @@ int SBN_SERIAL_Init(int Version)
 {
     if (Version != 1)
     {
-        CFE_EVS_SendEvent(SBN_SERIAL_CONFIG_EID, CFE_EVS_ERROR, "mismatching version %d (SBN app reports %d)", Version,
+        CFE_EVS_SendEvent(SBN_SERIAL_CONFIG_EID,
+                          CFE_EVS_ERROR,
+                          "mismatching version %d (SBN app reports %d)",
+                          Version,
                           1);
         return SBN_ERROR;
     } /* end if */
@@ -117,8 +120,12 @@ static int TrySerial(SBN_SERIAL_Peer_t *PeerData)
 
     /* all good! */
 
-    CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID, CFE_EVS_INFORMATION,
-                      "Serial device %s (task=%d, fd=%d) attached, flushing.", PeerData->Filename, OS_TaskGetId(), FD);
+    CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID,
+                      CFE_EVS_INFORMATION,
+                      "Serial device %s (task=%d, fd=%d) attached, flushing.",
+                      PeerData->Filename,
+                      OS_TaskGetId(),
+                      FD);
 
     PeerData->SerialConn = TRUE;
     PeerData->FD         = FD;
@@ -195,8 +202,12 @@ int SBN_SERIAL_Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_
     return SBN_SUCCESS;
 } /* end SBN_SERIAL_Send */
 
-int SBN_SERIAL_Recv(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgType_t *MsgTypePtr,
-                    SBN_MsgSz_t *MsgSzPtr, SBN_CpuID_t *CpuIDPtr, void *MsgBuf)
+int SBN_SERIAL_Recv(SBN_NetInterface_t  *Net,
+                    SBN_PeerInterface_t *Peer,
+                    SBN_MsgType_t       *MsgTypePtr,
+                    SBN_MsgSz_t         *MsgSzPtr,
+                    SBN_CpuID_t         *CpuIDPtr,
+                    void                *MsgBuf)
 {
     SBN_SERIAL_Peer_t *PeerData = (SBN_SERIAL_Peer_t *)Peer->ModulePvt;
 
@@ -224,9 +235,13 @@ int SBN_SERIAL_Recv(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgT
 
     if (Result < 0)
     {
-        CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID, CFE_EVS_INFORMATION,
-                          "Read error TaskID=%d, FD=%d, errno=%d, CPU=%d disconnected", OS_TaskGetId(), PeerData->FD,
-                          errno, Peer->ProcessorID);
+        CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID,
+                          CFE_EVS_INFORMATION,
+                          "Read error TaskID=%d, FD=%d, errno=%d, CPU=%d disconnected",
+                          OS_TaskGetId(),
+                          PeerData->FD,
+                          errno,
+                          Peer->ProcessorID);
 
         close(PeerData->FD);
         PeerData->Connected  = FALSE;
@@ -251,8 +266,11 @@ int SBN_SERIAL_Recv(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgT
 
         if (Received < 0)
         {
-            CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID, CFE_EVS_INFORMATION,
-                              "Read error FD=%d, errno=%d, CPU=%d disconnected", PeerData->FD, errno,
+            CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID,
+                              CFE_EVS_INFORMATION,
+                              "Read error FD=%d, errno=%d, CPU=%d disconnected",
+                              PeerData->FD,
+                              errno,
                               Peer->ProcessorID);
 
             close(PeerData->FD);

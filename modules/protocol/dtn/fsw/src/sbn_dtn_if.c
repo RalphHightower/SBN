@@ -143,8 +143,8 @@ int SBN_DTN_Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_t M
     } /* end if */
 
     Object NewBundle;
-    if (bp_send(NULL, PeerData->EIN, NULL, 300, BP_STD_PRIORITY, NoCustodyRequested, 0, 0, NULL, BundleZCO,
-                &NewBundle) < 1)
+    if (bp_send(NULL, PeerData->EIN, NULL, 300, BP_STD_PRIORITY, NoCustodyRequested, 0, 0, NULL, BundleZCO, &NewBundle)
+        < 1)
     {
         CFE_EVS_SendEvent(SBN_DTN_SOCK_EID, CFE_EVS_ERROR, "bpsource can't send ADU");
         return SBN_ERROR;
@@ -157,8 +157,11 @@ int SBN_DTN_Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_t M
  * from all peers but that's ok, I just inject them into the SB and all is
  * good!
  */
-int SBN_DTN_Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr, SBN_CpuID_t *CpuIDPtr,
-                 void *Payload)
+int SBN_DTN_Recv(SBN_NetInterface_t *Net,
+                 SBN_MsgType_t      *MsgTypePtr,
+                 SBN_MsgSz_t        *MsgSzPtr,
+                 SBN_CpuID_t        *CpuIDPtr,
+                 void               *Payload)
 {
     uint8      RecvBuf[SBN_MAX_PACKED_MSG_SZ];
     BpDelivery Delivery;
@@ -204,8 +207,11 @@ int SBN_DTN_Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t
     sdr_exit_xn(NetData->RecvSDR);
     if (ContentLength > sizeof(RecvBuf))
     {
-        CFE_EVS_SendEvent(SBN_DTN_SOCK_EID, CFE_EVS_ERROR, "Received message too large for buffer. (Bufsize=%d Msg=%d)",
-                          sizeof(RecvBuf), ContentLength);
+        CFE_EVS_SendEvent(SBN_DTN_SOCK_EID,
+                          CFE_EVS_ERROR,
+                          "Received message too large for buffer. (Bufsize=%d Msg=%d)",
+                          sizeof(RecvBuf),
+                          ContentLength);
         return SBN_ERROR;
     } /* end if */
 

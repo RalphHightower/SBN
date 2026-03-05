@@ -225,8 +225,12 @@ typedef struct
      *
      * @sa UnpackMsg
      */
-    void (*PackMsg)(void *SBNMsgBuf, SBN_MsgSz_t MsgSz, SBN_MsgType_t MsgType, CFE_ProcessorID_t ProcessorID,
-                    CFE_SpacecraftID_t SpacecraftID, void *Msg);
+    void (*PackMsg)(void              *SBNMsgBuf,
+                    SBN_MsgSz_t        MsgSz,
+                    SBN_MsgType_t      MsgType,
+                    CFE_ProcessorID_t  ProcessorID,
+                    CFE_SpacecraftID_t SpacecraftID,
+                    void              *Msg);
 
     /**
      * @brief Used by modules to unpack messages received.
@@ -242,8 +246,12 @@ typedef struct
      *
      * @sa PackMsg
      */
-    bool (*UnpackMsg)(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_MsgType_t *MsgTypePtr, CFE_ProcessorID_t *ProcessorIDPtr,
-                      CFE_SpacecraftID_t *SpacecraftIDPtr, void *Msg);
+    bool (*UnpackMsg)(void               *SBNBuf,
+                      SBN_MsgSz_t        *MsgSzPtr,
+                      SBN_MsgType_t      *MsgTypePtr,
+                      CFE_ProcessorID_t  *ProcessorIDPtr,
+                      CFE_SpacecraftID_t *SpacecraftIDPtr,
+                      void               *Msg);
 
     /**
      * Called by backend modules to signal that the connection has been
@@ -286,8 +294,9 @@ typedef struct
      *
      * @return A pointer to the peer interface structure.
      */
-    SBN_PeerInterface_t *(*GetPeer)(SBN_NetInterface_t *Net, CFE_ProcessorID_t ProcessorID,
-                                    CFE_SpacecraftID_t SpacecraftID);
+    SBN_PeerInterface_t *(*GetPeer)(SBN_NetInterface_t *Net,
+                                    CFE_ProcessorID_t   ProcessorID,
+                                    CFE_SpacecraftID_t  SpacecraftID);
 } SBN_ProtocolOutlet_t;
 
 /**
@@ -391,9 +400,13 @@ struct SBN_IfOps_s
      *
      * @return SBN_SUCCESS on success, SBN_ERROR on failure
      */
-    SBN_Status_t (*RecvFromPeer)(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgType_t *MsgTypePtr,
-                                 SBN_MsgSz_t *MsgSzPtr, CFE_ProcessorID_t *ProcessorIDPtr,
-                                 CFE_SpacecraftID_t *SpacecraftIDPtr, void *PayloadBuffer);
+    SBN_Status_t (*RecvFromPeer)(SBN_NetInterface_t  *Net,
+                                 SBN_PeerInterface_t *Peer,
+                                 SBN_MsgType_t       *MsgTypePtr,
+                                 SBN_MsgSz_t         *MsgSzPtr,
+                                 CFE_ProcessorID_t   *ProcessorIDPtr,
+                                 CFE_SpacecraftID_t  *SpacecraftIDPtr,
+                                 void                *PayloadBuffer);
 
     /**
      * Receives an individual message from the network.
@@ -408,9 +421,12 @@ struct SBN_IfOps_s
      *
      * @return SBN_SUCCESS on success, SBN_ERROR on failure
      */
-    SBN_Status_t (*RecvFromNet)(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                void *PayloadBuffer);
+    SBN_Status_t (*RecvFromNet)(SBN_NetInterface_t *Net,
+                                SBN_MsgType_t      *MsgTypePtr,
+                                SBN_MsgSz_t        *MsgSzPtr,
+                                CFE_ProcessorID_t  *ProcessorIDPtr,
+                                CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                void               *PayloadBuffer);
 
     /**
      * Unload a network. This will unload all associated peers as well.

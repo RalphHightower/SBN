@@ -33,8 +33,11 @@ void SBN_PackMsg(void *SBNMsgBuf, SBN_MsgSz_t MsgSz, SBN_MsgType_t MsgType, CFE_
     UT_DEFAULT_IMPL(SBN_PackMsg);
 } /* end SBN_PackMsg() */
 
-bool SBN_UnpackMsg(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_MsgType_t *MsgTypePtr, CFE_ProcessorID_t *ProcessorIDPtr,
-                   void *Msg)
+bool SBN_UnpackMsg(void              *SBNBuf,
+                   SBN_MsgSz_t       *MsgSzPtr,
+                   SBN_MsgType_t     *MsgTypePtr,
+                   CFE_ProcessorID_t *ProcessorIDPtr,
+                   void              *Msg)
 {
     uint32           status = 0;
     SBN_Unpack_Buf_t p;

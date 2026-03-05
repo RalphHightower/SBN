@@ -26,7 +26,7 @@ uint8 Buffer[1024];
 
 CFE_MSG_Message_t *CmdPktPtr = (CFE_MSG_Message_t *)Buffer;
 CFE_MSG_Size_t     MsgSz     = sizeof(CFE_MSG_CommandHeader_t);
-CFE_SB_MsgId_t     MsgId     = {.Value = SBN_CMD_MID};
+CFE_SB_MsgId_t     MsgId     = { .Value = SBN_CMD_MID };
 CFE_MSG_FcnCode_t  FcnCode   = SBN_NOOP_CC;
 
 #define MSGINIT()                                                                   \
@@ -609,9 +609,13 @@ static void Test_SBN_Cmds(void)
     CC_Err();
 } /* end Test_SBN_SendNetMsg() */
 
-void UT_Setup(void) {} /* end UT_Setup() */
+void UT_Setup(void)
+{
+} /* end UT_Setup() */
 
-void UT_TearDown(void) {} /* end UT_TearDown() */
+void UT_TearDown(void)
+{
+} /* end UT_TearDown() */
 
 void UtTest_Setup(void)
 {

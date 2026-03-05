@@ -89,8 +89,12 @@ static SBN_Status_t LoadRemapTbl(void)
     SBN_RemapTbl_t *TblPtr     = NULL;
     CFE_Status_t    CFE_Status = CFE_SUCCESS;
 
-    if (CFE_TBL_Register(&RemapTblHandle, SBN_F_REMAP_TABLE_NAME, sizeof(SBN_RemapTbl_t), CFE_TBL_OPT_DEFAULT,
-                         &RemapTblVal) != CFE_SUCCESS)
+    if (CFE_TBL_Register(&RemapTblHandle,
+                         SBN_F_REMAP_TABLE_NAME,
+                         sizeof(SBN_RemapTbl_t),
+                         CFE_TBL_OPT_DEFAULT,
+                         &RemapTblVal)
+        != CFE_SUCCESS)
     {
         EVSSendErr(SBN_F_REMAP_TBL_EID, "unable to register remap tbl handle");
         return SBN_ERROR;
@@ -130,7 +134,10 @@ static SBN_Status_t LoadRemapTbl(void)
 } /* end LoadRemapTbl() */
 
 /* finds the entry or the one that would immediately follow it */
-static int BinarySearch(void *Entries, void *SearchEntry, size_t EntryCnt, size_t EntrySz,
+static int BinarySearch(void  *Entries,
+                        void  *SearchEntry,
+                        size_t EntryCnt,
+                        size_t EntrySz,
                         int (*EntryCompare)(const void *, const void *))
 {
     int start, end, midpoint, found;
@@ -163,7 +170,7 @@ static int BinarySearch(void *Entries, void *SearchEntry, size_t EntryCnt, size_
 
 static int RemapTblSearch(uint32 ProcessorID, uint32 SpacecraftID, CFE_SB_MsgId_t MID)
 {
-    SBN_RemapTblEntry_t Entry = {ProcessorID, SpacecraftID, MID, {0}};
+    SBN_RemapTblEntry_t Entry = { ProcessorID, SpacecraftID, MID, { 0 } };
     return BinarySearch(RemapTbl->Entries, &Entry, RemapTblCnt, sizeof(SBN_RemapTblEntry_t), RemapTblCompar);
 } /* end RemapTblSearch() */
 
@@ -186,9 +193,9 @@ static SBN_Status_t Remap(void *msg, SBN_Filter_Ctx_t *Context)
 
     int i = RemapTblSearch(Context->PeerProcessorID, Context->PeerSpacecraftID, FromMID);
 
-    if (i < RemapTblCnt && RemapTbl->Entries[i].ProcessorID == Context->PeerProcessorID &&
-        RemapTbl->Entries[i].SpacecraftID == Context->PeerSpacecraftID &&
-        CFE_SB_MsgId_Equal(RemapTbl->Entries[i].FromMID, FromMID))
+    if (i < RemapTblCnt && RemapTbl->Entries[i].ProcessorID == Context->PeerProcessorID
+        && RemapTbl->Entries[i].SpacecraftID == Context->PeerSpacecraftID
+        && CFE_SB_MsgId_Equal(RemapTbl->Entries[i].FromMID, FromMID))
     {
         ToMID = RemapTbl->Entries[i].ToMID;
     }
@@ -227,9 +234,9 @@ static SBN_Status_t Remap_MID(CFE_SB_MsgId_t *InOutMsgIdPtr, SBN_Filter_Ctx_t *C
     EVSSendDbg(SBN_F_REMAP_TBL_EID, "Remap check 0x%04X", CFE_SB_MsgIdToValue(*InOutMsgIdPtr));
     for (i = 0; i < RemapTblCnt; i++)
     {
-        if (RemapTbl->Entries[i].ProcessorID == Context->PeerProcessorID &&
-            RemapTbl->Entries[i].SpacecraftID == Context->PeerSpacecraftID &&
-            CFE_SB_MsgId_Equal(RemapTbl->Entries[i].ToMID, *InOutMsgIdPtr))
+        if (RemapTbl->Entries[i].ProcessorID == Context->PeerProcessorID
+            && RemapTbl->Entries[i].SpacecraftID == Context->PeerSpacecraftID
+            && CFE_SB_MsgId_Equal(RemapTbl->Entries[i].ToMID, *InOutMsgIdPtr))
         {
             *InOutMsgIdPtr = RemapTbl->Entries[i].FromMID;
             EVSSendDbg(SBN_F_REMAP_TBL_EID, " --> 0x%04X", CFE_SB_MsgIdToValue(*InOutMsgIdPtr));
@@ -348,4 +355,4 @@ static SBN_Status_t Init(int Version, CFE_EVS_EventID_t BaseEID)
     return SBN_SUCCESS;
 } /* end Init() */
 
-SBN_FilterInterface_t SBN_F_Remap = {Init, Remap, Remap, Remap_MID};
+SBN_FilterInterface_t SBN_F_Remap = { Init, Remap, Remap, Remap_MID };

@@ -35,11 +35,12 @@
 
 static TO_subscription_t TO_SubTable[] = {
     /* CFS App Subscriptions */
-    {0x0843, {0, 0}, 4},
-    {0x08FA, {0, 0}, 4},
+    { 0x0843,    { 0, 0 }, 4 },
+    { 0x08FA,    { 0, 0 }, 4 },
     /* telemetry test sub */
-    {0x0888, {0, 0}, 4},
-    {TO_UNUSED, {0, 0}, 0}};
+    { 0x0888,    { 0, 0 }, 4 },
+    { TO_UNUSED, { 0, 0 }, 0 }
+};
 
 /************************
 ** End of File Comment **

@@ -308,8 +308,9 @@
 /** \{ */
 #define CFE_MISSION_ES_CRC_8  1 /**< \brief CRC ( 8 bit additive - returns 32 bit total) (Currently not implemented) */
 #define CFE_MISSION_ES_CRC_16 2 /**< \brief CRC (16 bit additive - returns 32 bit total) */
-#define CFE_MISSION_ES_CRC_32 3 /**< \brief CRC (32 bit additive - returns 32 bit total) (Currently not implemented) \
-                                 */
+#define CFE_MISSION_ES_CRC_32                                                              \
+    3 /**< \brief CRC (32 bit additive - returns 32 bit total) (Currently not implemented) \
+       */
 /** \} */
 
 /**
@@ -394,15 +395,15 @@
 **  \par Limits
 **      Not Applicable
 */
-#define CFE_MISSION_EVS_CMD_MSG 1
+#define CFE_MISSION_EVS_CMD_MSG  1
 /* Offset 2 is available */
 #define CFE_MISSION_SB_CMD_MSG   3
 #define CFE_MISSION_TBL_CMD_MSG  4
 #define CFE_MISSION_TIME_CMD_MSG 5
 #define CFE_MISSION_ES_CMD_MSG   6
 
-#define CFE_MISSION_ES_SEND_HK_MSG  8
-#define CFE_MISSION_EVS_SEND_HK_MSG 9
+#define CFE_MISSION_ES_SEND_HK_MSG   8
+#define CFE_MISSION_EVS_SEND_HK_MSG  9
 /* Offset 10 is available */
 #define CFE_MISSION_SB_SEND_HK_MSG   11
 #define CFE_MISSION_TBL_SEND_HK_MSG  12
@@ -438,8 +439,8 @@
 **  \par Limits
 **      Not Applicable
 */
-#define CFE_MISSION_ES_HK_TLM_MSG  0
-#define CFE_MISSION_EVS_HK_TLM_MSG 1
+#define CFE_MISSION_ES_HK_TLM_MSG     0
+#define CFE_MISSION_EVS_HK_TLM_MSG    1
 /* Offset 2 is available */
 #define CFE_MISSION_SB_HK_TLM_MSG     3
 #define CFE_MISSION_TBL_HK_TLM_MSG    4

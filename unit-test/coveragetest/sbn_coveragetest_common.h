@@ -78,8 +78,11 @@ typedef struct
  * A hook function to check for a specific event. If the passed event ID and text (if ExpectedText
  * is defined) match those configured, the MatchCount is incremented.
  */
-int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
-                         va_list va);
+int32 UT_CheckEvent_Hook(void                   *UserObj,
+                         int32                   StubRetcode,
+                         uint32                  CallCount,
+                         const UT_StubContext_t *Context,
+                         va_list                 va);
 
 extern UT_CheckEvent_t EventTest;
 
@@ -94,9 +97,12 @@ SBN_Status_t ProtoInitModule_Nominal(int ProtoVersion, CFE_EVS_EventID_t BaseEID
 SBN_Status_t InitNet_Nominal(SBN_NetInterface_t *Net);
 SBN_Status_t LoadNet_Nominal(SBN_NetInterface_t *Net, const char *Address);
 SBN_Status_t InitPeer_Nominal(SBN_PeerInterface_t *Peer);
-SBN_Status_t RecvFromNet_Nominal(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                 CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                 void *PayloadBuffer);
+SBN_Status_t RecvFromNet_Nominal(SBN_NetInterface_t *Net,
+                                 SBN_MsgType_t      *MsgTypePtr,
+                                 SBN_MsgSz_t        *MsgSzPtr,
+                                 CFE_ProcessorID_t  *ProcessorIDPtr,
+                                 CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                 void               *PayloadBuffer);
 SBN_Status_t LoadPeer_Nominal(SBN_PeerInterface_t *Peer, const char *Address);
 SBN_Status_t UnloadNet_Nominal(SBN_NetInterface_t *Net);
 SBN_Status_t UnloadPeer_Nominal(SBN_PeerInterface_t *Net);

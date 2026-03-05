@@ -67,4 +67,4 @@ static CFE_Status_t Init(int Version, CFE_EVS_EventID_t BaseEID)
     return CFE_SUCCESS;
 } /* end Init() */
 
-SBN_FilterInterface_t SBN_F_CCSDS_End = {Init, End, End, NULL};
+SBN_FilterInterface_t SBN_F_CCSDS_End = { Init, End, End, NULL };

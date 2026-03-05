@@ -20,7 +20,7 @@
 #include "cfe_msgids.h"
 #include "sbn_pack.h"
 
-CFE_SB_MsgId_t MsgID = {.Value = 0xDEAD};
+CFE_SB_MsgId_t MsgID = { .Value = 0xDEAD };
 
 static void SendSubsRequests_SendMsg1Err(void)
 {
@@ -417,7 +417,7 @@ static void PSFP_PFP_FiltErr(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessSubsFromPeer(PeerPtr, Buf), SBN_ERROR);
@@ -438,7 +438,7 @@ static void PSFP_PFP_AlreadySub(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessSubsFromPeer(PeerPtr, Buf), SBN_SUCCESS);
@@ -460,7 +460,7 @@ static void PSFP_PFP_SubErr(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_SubscribeLocal), 1, -1);
@@ -486,7 +486,7 @@ static void PSFP_PFP_MaxSubsErr(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessSubsFromPeer(PeerPtr, Buf), SBN_ERROR);
@@ -510,7 +510,7 @@ static void PSFP_IdentErr(void)
     Pack_Data(&Pack, (void *)tmpident, sizeof(tmpident));
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessSubsFromPeer(PeerPtr, Buf), SBN_ERROR);
@@ -530,7 +530,7 @@ static void PSFP_Nominal(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessSubsFromPeer(PeerPtr, Buf), SBN_SUCCESS);
@@ -568,7 +568,7 @@ static void PUSFP_PUFP_FiltErr(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessUnsubsFromPeer(PeerPtr, Buf), SBN_SUCCESS);
@@ -589,7 +589,7 @@ static void PUSFP_PUFP_NotSub(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessUnsubsFromPeer(PeerPtr, Buf), SBN_SUCCESS);
@@ -614,7 +614,7 @@ static void PUSFP_PUFP_UnsubErr(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_UnsubscribeLocal), 1, -1);
@@ -643,7 +643,7 @@ static void PUSFP_IdentWarn(void)
     Pack_Data(&Pack, (void *)tmpident, sizeof(tmpident));
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessUnsubsFromPeer(PeerPtr, Buf), SBN_SUCCESS);
@@ -666,7 +666,7 @@ static void PUSFP_Nominal(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UtAssert_INT32_EQ(SBN_ProcessUnsubsFromPeer(PeerPtr, Buf), SBN_SUCCESS);
@@ -720,9 +720,13 @@ void Test_SBN_RemoveAllSubsFromPeer(void)
     RASFP_Nominal();
 } /* end Test_SBN_RemoveAllSubsFromPeer() */
 
-void UT_Setup(void) {} /* end UT_Setup() */
+void UT_Setup(void)
+{
+} /* end UT_Setup() */
 
-void UT_TearDown(void) {} /* end UT_TearDown() */
+void UT_TearDown(void)
+{
+} /* end UT_TearDown() */
 
 void UtTest_Setup(void)
 {

@@ -246,7 +246,9 @@ static SBN_Status_t InitNet(SBN_NetInterface_t *Net)
 
     if (OS_SocketBind(Socket, &NetData->Addr) != OS_SUCCESS)
     {
-        EVSSendErr(SBN_TCP_SOCK_EID, "bind call failed (0x%lx Socket=%ld)", (unsigned long int)NetData,
+        EVSSendErr(SBN_TCP_SOCK_EID,
+                   "bind call failed (0x%lx Socket=%ld)",
+                   (unsigned long int)NetData,
                    OS_ObjectIdToInteger(NetData->Socket));
         return SBN_ERROR;
     }
@@ -307,8 +309,10 @@ static void CheckNet(SBN_NetInterface_t *Net)
             /* TODO: make a #define */
             if (OS_TimeGetTotalSeconds(OS_TimeSubtract(LocalTime, PeerData->LastConnectTry)) > 5)
             {
-                EVSSendInfo(SBN_TCP_DEBUG_EID, "connecting to peer (PeerData=0x%lx, ProcessorID=%d)",
-                            (unsigned long int)PeerData, Peer->ProcessorID);
+                EVSSendInfo(SBN_TCP_DEBUG_EID,
+                            "connecting to peer (PeerData=0x%lx, ProcessorID=%d)",
+                            (unsigned long int)PeerData,
+                            Peer->ProcessorID);
 
                 PeerData->LastConnectTry = LocalTime;
 
@@ -323,7 +327,8 @@ static void CheckNet(SBN_NetInterface_t *Net)
                 /* TODO: Make timeout configurable */
                 if (OS_SocketConnect(Socket, &PeerData->Addr, 100) != OS_SUCCESS)
                 {
-                    EVSSendErr(SBN_TCP_SOCK_EID, "unable to connect to peer (PeerData=0x%lx)",
+                    EVSSendErr(SBN_TCP_SOCK_EID,
+                               "unable to connect to peer (PeerData=0x%lx)",
                                (unsigned long int)PeerData);
 
                     OS_close(Socket);
@@ -383,14 +388,14 @@ static SBN_Status_t PollPeer(SBN_PeerInterface_t *Peer)
     OS_time_t CurrentTime;
     OS_GetLocalTime(&CurrentTime);
 
-    if (SBN_TCP_PEER_HEARTBEAT > 0 &&
-        OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastSend)) > SBN_TCP_PEER_HEARTBEAT)
+    if (SBN_TCP_PEER_HEARTBEAT > 0
+        && OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastSend)) > SBN_TCP_PEER_HEARTBEAT)
     {
         Send(Peer, SBN_TCP_HEARTBEAT_MSG, 0, NULL);
     } /* end if */
 
-    if (SBN_TCP_PEER_TIMEOUT > 0 &&
-        OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastRecv)) > SBN_TCP_PEER_TIMEOUT)
+    if (SBN_TCP_PEER_TIMEOUT > 0
+        && OS_TimeGetTotalSeconds(OS_TimeSubtract(CurrentTime, Peer->LastRecv)) > SBN_TCP_PEER_TIMEOUT)
     {
         EVSSendInfo(SBN_TCP_DEBUG_EID, "CPU %d timeout, disconnected", Peer->ProcessorID);
 
@@ -400,8 +405,12 @@ static SBN_Status_t PollPeer(SBN_PeerInterface_t *Peer)
     return SBN_SUCCESS;
 } /* end PollPeer() */
 
-static SBN_Status_t Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                         CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr, void *MsgBuf)
+static SBN_Status_t Recv(SBN_NetInterface_t *Net,
+                         SBN_MsgType_t      *MsgTypePtr,
+                         SBN_MsgSz_t        *MsgSzPtr,
+                         CFE_ProcessorID_t  *ProcessorIDPtr,
+                         CFE_SpacecraftID_t *SpacecraftIDPtr,
+                         void               *MsgBuf)
 {
     OS_FdSet           FdSet;
     OS_SelectTimeout_t timeout = 0;
@@ -503,8 +512,8 @@ static SBN_Status_t Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN
             } /* end if */
 
             /* we have the complete body, decode! */
-            if (SBN.UnpackMsg(&RecvBufs[Conn->BufNum], MsgSzPtr, MsgTypePtr, ProcessorIDPtr, SpacecraftIDPtr, MsgBuf) ==
-                false)
+            if (SBN.UnpackMsg(&RecvBufs[Conn->BufNum], MsgSzPtr, MsgTypePtr, ProcessorIDPtr, SpacecraftIDPtr, MsgBuf)
+                == false)
             {
                 return SBN_ERROR;
             } /* end if */
@@ -566,5 +575,5 @@ static SBN_Status_t UnloadNet(SBN_NetInterface_t *Net)
     return SBN_SUCCESS;
 } /* end UnloadNet() */
 
-SBN_IfOps_t SBN_TCP_Ops = {Init, InitNet, InitPeer, LoadNet,   LoadPeer,  PollPeer,
-                           Send, NULL,    Recv,     UnloadNet, UnloadPeer};
+SBN_IfOps_t SBN_TCP_Ops = { Init, InitNet, InitPeer, LoadNet,   LoadPeer,  PollPeer,
+                            Send, NULL,    Recv,     UnloadNet, UnloadPeer };
