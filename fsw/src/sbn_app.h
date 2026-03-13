@@ -46,13 +46,6 @@
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void  SBN_ShowPeerData(void);
-int32 SBN_GetPeerFileData(void);
-
-SBN_Status_t SBN_RecvNetMsgs(void);
-
-void SBN_CheckPeerPipes(void);
-
 /**
  * \brief SBN global data structure definition
  */
@@ -160,5 +153,9 @@ bool         SBN_UnpackMsg(void               *SBNBuf,
                            CFE_SpacecraftID_t *SpacecraftIDPtr,
                            void               *Msg);
 SBN_Status_t SBN_SendNetMsg(SBN_MsgType_t MsgType, SBN_MsgSz_t MsgSz, void *Msg, SBN_PeerInterface_t *Peer);
+void         SBN_ShowPeerData(void);
+int32        SBN_GetPeerFileData(void);
+SBN_Status_t SBN_RecvNetMsgs(void);
+void         SBN_CheckPeerPipes(void);
 
 #endif /* _sbn_app_ */
