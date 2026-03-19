@@ -365,7 +365,7 @@ static SBN_Status_t Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_M
 
     SBN.PackMsg(&SendBufs[NetData->BufNum], MsgSz, MsgType, CFE_PSP_GetProcessorId(), CFE_PSP_GetSpacecraftId(), Msg);
     int32 sent_size = OS_write(PeerData->Conn->Socket, &SendBufs[NetData->BufNum], MsgSz + SBN_PACKED_HDR_SZ);
-    if (sent_size < MsgSz + SBN_PACKED_HDR_SZ)
+    if ((sent_size < 0) || (sent_size < MsgSz + SBN_PACKED_HDR_SZ))
     {
         EVSSendInfo(SBN_TCP_DEBUG_EID, "CPU %d failed to write, disconnected", Peer->ProcessorID);
 
@@ -485,7 +485,7 @@ static SBN_Status_t Recv(SBN_NetInterface_t *Net,
 
             /* only get here if we're recv'd the header and ready for the body */
 
-            ToRead = CFE_MAKE_BIG16(*((SBN_MsgSz_t *)&RecvBufs[Conn->BufNum])) + SBN_PACKED_HDR_SZ - Conn->RecvSz;
+            ToRead = CFE_MAKE_BIG32(*((SBN_MsgSz_t *)&RecvBufs[Conn->BufNum])) + SBN_PACKED_HDR_SZ - Conn->RecvSz;
             if (ToRead)
             {
                 Received = OS_read(Conn->Socket, (char *)&RecvBufs[Conn->BufNum] + Conn->RecvSz, ToRead);
