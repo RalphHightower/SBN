@@ -94,7 +94,7 @@ typedef struct
 } SBN_Subs_t;
 
 /* most/all scalars should be typedef'd for readability and type checking */
-typedef int16             SBN_MsgSz_t; /* needs to support < 0 for errs */
+typedef uint32            SBN_MsgSz_t;
 typedef uint8             SBN_MsgType_t;
 typedef uint8             SBN_ModuleIdx_t;
 typedef uint8             SBN_NetIdx_t;
