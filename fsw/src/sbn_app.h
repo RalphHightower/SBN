@@ -154,6 +154,5 @@ bool         SBN_UnpackMsg(void               *SBNBuf,
                            void               *Msg);
 SBN_Status_t SBN_SendNetMsg(SBN_MsgType_t MsgType, SBN_MsgSz_t MsgSz, void *Msg, SBN_PeerInterface_t *Peer);
 SBN_Status_t SBN_RecvNetMsgs(void);
-void         SBN_CheckPeerPipes(void);
 
 #endif /* _sbn_app_ */
