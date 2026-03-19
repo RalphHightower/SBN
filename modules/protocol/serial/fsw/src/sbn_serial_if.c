@@ -189,7 +189,7 @@ int SBN_SERIAL_Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_
 
     SBN_PackMsg(&SendBuf, MsgSz, MsgType, CFE_PSP_GetProcessorId(), Msg);
     ssize_t sent_size = write(PeerData->FD, &SendBuf, MsgSz + SBN_PACKED_HDR_SZ);
-    if (sent_size < MsgSz + SBN_PACKED_HDR_SZ)
+    if ((sent_size < 0) || (sent_size < MsgSz + SBN_PACKED_HDR_SZ))
     {
         CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID, CFE_EVS_INFORMATION, "CPU %d disconnected", Peer->ProcessorID);
 
@@ -304,7 +304,7 @@ int SBN_SERIAL_Recv(SBN_NetInterface_t  *Net,
 
     /* only get here if we're read'd the header and ready for the body */
 
-    ToRead = CFE_MAKE_BIG16(*((SBN_MsgSz_t *)&RecvBufs[PeerData->BufNum])) + SBN_PACKED_HDR_SZ - PeerData->RecvSz;
+    ToRead = CFE_MAKE_BIG32(*((SBN_MsgSz_t *)&RecvBufs[PeerData->BufNum])) + SBN_PACKED_HDR_SZ - PeerData->RecvSz;
     if (ToRead)
     {
         Received = read(PeerData->FD, (char *)&RecvBufs[PeerData->BufNum] + PeerData->RecvSz, ToRead);
