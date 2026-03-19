@@ -92,7 +92,7 @@ void SBN_PackMsg(void             *SBNBuf,
     Pack_t Pack;
     Pack_Init(&Pack, SBNBuf, MsgSz + SBN_PACKED_HDR_SZ, false);
 
-    Pack_Int16(&Pack, MsgSz);
+    Pack_UInt32(&Pack, MsgSz);
     Pack_UInt8(&Pack, MsgType);
     Pack_UInt32(&Pack, ProcessorID);
     Pack_UInt32(&Pack, SpacecraftID);
@@ -131,7 +131,7 @@ bool SBN_UnpackMsg(void               *SBNBuf,
     uint8  t = 0;
     Pack_t Pack;
     Pack_Init(&Pack, SBNBuf, SBN_MAX_PACKED_MSG_SZ, false);
-    Unpack_Int16(&Pack, MsgSzPtr);
+    Unpack_UInt32(&Pack, MsgSzPtr);
     Unpack_UInt8(&Pack, &t);
     *MsgTypePtr = t;
     Unpack_UInt32(&Pack, ProcessorIDPtr);
