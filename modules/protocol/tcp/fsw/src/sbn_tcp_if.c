@@ -364,7 +364,7 @@ static SBN_Status_t Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_M
     } /* end if */
 
     SBN.PackMsg(&SendBufs[NetData->BufNum], MsgSz, MsgType, CFE_PSP_GetProcessorId(), CFE_PSP_GetSpacecraftId(), Msg);
-    SBN_MsgSz_t sent_size = OS_write(PeerData->Conn->Socket, &SendBufs[NetData->BufNum], MsgSz + SBN_PACKED_HDR_SZ);
+    int32 sent_size = OS_write(PeerData->Conn->Socket, &SendBufs[NetData->BufNum], MsgSz + SBN_PACKED_HDR_SZ);
     if (sent_size < MsgSz + SBN_PACKED_HDR_SZ)
     {
         EVSSendInfo(SBN_TCP_DEBUG_EID, "CPU %d failed to write, disconnected", Peer->ProcessorID);
