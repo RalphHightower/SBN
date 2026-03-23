@@ -188,7 +188,7 @@ int SBN_SERIAL_Send(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgSz_
     } /* end if */
 
     SBN_PackMsg(&SendBuf, MsgSz, MsgType, CFE_PSP_GetProcessorId(), Msg);
-    size_t sent_size = write(PeerData->FD, &SendBuf, MsgSz + SBN_PACKED_HDR_SZ);
+    ssize_t sent_size = write(PeerData->FD, &SendBuf, MsgSz + SBN_PACKED_HDR_SZ);
     if (sent_size < MsgSz + SBN_PACKED_HDR_SZ)
     {
         CFE_EVS_SendEvent(SBN_SERIAL_DEBUG_EID, CFE_EVS_INFORMATION, "CPU %d disconnected", Peer->ProcessorID);
