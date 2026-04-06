@@ -610,7 +610,8 @@ void SBN_SendTask(void)
 {
     SendTaskData_t   D;
     SBN_Filter_Ctx_t Filter_Context;
-    CFE_MSG_Size_t   MsgSz = 0;
+    CFE_MSG_Size_t   MsgSz     = 0;
+    SBN_MsgSz_t      SBN_MsgSz = 0;
 
     Filter_Context.MyProcessorID  = CFE_PSP_GetProcessorId();
     Filter_Context.MySpacecraftID = CFE_PSP_GetSpacecraftId();
@@ -691,7 +692,9 @@ void SBN_SendTask(void)
             continue;
         } /* end if */
 
-        D.Status = SBN_SendNetMsg(SBN_APP_MSG, MsgSz, D.MsgPtr, D.Peer);
+        SBN_MsgSz = (SBN_MsgSz_t)MsgSz;
+
+        D.Status = SBN_SendNetMsg(SBN_APP_MSG, SBN_MsgSz, D.MsgPtr, D.Peer);
 
         if (D.Status == SBN_ERROR)
         {
@@ -711,8 +714,9 @@ static SBN_Status_t CheckPeerPipes(void)
 {
     CFE_Status_t       CFE_Status;
     int                ReceivedFlag = 0, iter = 0;
-    CFE_MSG_Message_t *MsgPtr = NULL;
-    CFE_MSG_Size_t     MsgSz  = 0;
+    CFE_MSG_Message_t *MsgPtr    = NULL;
+    CFE_MSG_Size_t     MsgSz     = 0;
+    SBN_MsgSz_t        SBN_MsgSz = 0;
     SBN_Filter_Ctx_t   Filter_Context;
 
     Filter_Context.MyProcessorID  = CFE_PSP_GetProcessorId();
@@ -832,7 +836,9 @@ static SBN_Status_t CheckPeerPipes(void)
                     continue;
                 } /* end if */
 
-                SBN_SendNetMsg(SBN_APP_MSG, MsgSz, MsgPtr, Peer);
+                SBN_MsgSz = (SBN_MsgSz_t)MsgSz;
+
+                SBN_SendNetMsg(SBN_APP_MSG, SBN_MsgSz, MsgPtr, Peer);
             } /* end for */
         } /* end for */
 
