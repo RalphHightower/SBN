@@ -100,6 +100,8 @@ int SPW_GetData(SPW_SBNEntry_t spwEntry, void *dataBuffer, int dataSz, int *erro
     dataRead = fread(dataBuffer, 1, dataSz, fp);
     &error   = ferror(fp);
 
+    fclose(fp);
+
     if (error == SPW_FREAD_NO_ERROR)
     {
         return dataRead;
