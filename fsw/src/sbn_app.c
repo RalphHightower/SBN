@@ -1096,7 +1096,7 @@ static cpuaddr LoadConf_Module(SBN_Module_Entry_t *e, CFE_ES_ModuleID_t *ModuleI
  */
 static SBN_ModuleIdx_t LoadConf_Filters(SBN_Module_Entry_t     *FilterModules,
                                         SBN_ModuleIdx_t         FilterModuleCnt,
-                                        SBN_FilterInterface_t **ConfFilters,
+                                        SBN_FilterInterface_t **ConfFilters,     // cppcheck-suppress constParameter
                                         char ModuleNames[SBN_MAX_FILTERS_PER_PEER][SBN_MAX_MOD_NAME_LEN],
                                         SBN_FilterInterface_t **Filters)
 {
