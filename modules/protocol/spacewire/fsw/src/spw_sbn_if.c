@@ -142,6 +142,8 @@ int SPW_SendData(SPW_SBNEntry_t spwEntry, void *dataBuffer, int dataSz, int *err
     dataRead = fwrite(dataBuffer, 1, dataSz, fp);
     &error   = ferror(fp);
 
+    fclose(fp);
+
     if (error == SPW_FREAD_NO_ERROR)
     {
         return dataRead;
