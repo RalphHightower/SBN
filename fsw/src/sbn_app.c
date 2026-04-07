@@ -502,16 +502,16 @@ SBN_Status_t SBN_RecvNetMsgs(void)
                 // TODO: make configurable
                 for (MsgCnt = 0; MsgCnt < 100; MsgCnt++) /* read at most 100 messages from peer */
                 {
-                    CFE_ProcessorID_t  ProcessorID  = 0;
-                    CFE_SpacecraftID_t SpacecraftID = 0;
-                    SBN_MsgType_t      MsgType      = 0;
-                    SBN_MsgSz_t        MsgSz        = 0;
+                    CFE_ProcessorID_t  PeerProcessorID  = 0;
+                    CFE_SpacecraftID_t PeerSpacecraftID = 0;
+                    SBN_MsgType_t      PeerMsgType      = 0;
+                    SBN_MsgSz_t        PeerMsgSz        = 0;
 
                     memset(SBN.MsgBuffer, 0, sizeof(SBN.MsgBuffer));
 
                     SBN_Status =
                         Net->IfOps
-                            ->RecvFromPeer(Net, Peer, &MsgType, &MsgSz, &ProcessorID, &SpacecraftID, SBN.MsgBuffer);
+                            ->RecvFromPeer(Net, Peer, &PeerMsgType, &PeerMsgSz, &PeerProcessorID, &PeerSpacecraftID, SBN.MsgBuffer);
 
                     if (SBN_Status == SBN_IF_EMPTY)
                     {
@@ -520,7 +520,7 @@ SBN_Status_t SBN_RecvNetMsgs(void)
 
                     OS_GetLocalTime(&Peer->LastRecv);
 
-                    SBN_Status = SBN_ProcessNetMsg(Net, MsgType, ProcessorID, SpacecraftID, MsgSz, SBN.MsgBuffer);
+                    SBN_Status = SBN_ProcessNetMsg(Net, PeerMsgType, PeerProcessorID, PeerSpacecraftID, PeerMsgSz, SBN.MsgBuffer);
 
                     if (SBN_Status != SBN_SUCCESS)
                     {
