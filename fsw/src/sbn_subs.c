@@ -241,7 +241,7 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
  */
 static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t SBN_Status;
     int          SubIdx;
 
     /* find idx of matching subscription */
