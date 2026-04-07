@@ -646,7 +646,7 @@ SBN_Status_t SBN_ProcessAllSubscriptions(CFE_SB_AllSubscriptionsTlm_t *Ptr)
 SBN_Status_t SBN_RemoveAllSubsFromPeer(SBN_PeerInterface_t *Peer)
 {
     int          i          = 0;
-    CFE_Status_t CFE_Status = CFE_SUCCESS;
+    CFE_Status_t CFE_Status;
 
     for (i = 0; i < Peer->SubCnt; i++)
     {
