@@ -274,7 +274,8 @@ static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
 
     /* send unsubscription to all peers if peer state is heartbeating and */
     /* only if no more local subs (InUseCtr = 0)  */
-    int NetIdx = 0, PeerIdx = 0;
+    int NetIdx;
+    int PeerIdx;
     for (NetIdx = 0; NetIdx < SBN.NetCnt; NetIdx++)
     {
         SBN_NetInterface_t *Net = &SBN.Nets[NetIdx];
