@@ -713,7 +713,8 @@ void SBN_SendTask(void)
 static SBN_Status_t CheckPeerPipes(void)
 {
     CFE_Status_t       CFE_Status;
-    int                ReceivedFlag = 0, iter = 0;
+    int                ReceivedFlag;
+    int                iter      = 0;
     CFE_MSG_Message_t *MsgPtr    = NULL;
     CFE_MSG_Size_t     MsgSz     = 0;
     SBN_MsgSz_t        SBN_MsgSz = 0;
