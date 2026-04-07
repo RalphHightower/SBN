@@ -1105,7 +1105,7 @@ static SBN_ModuleIdx_t LoadConf_Filters(SBN_Module_Entry_t     *FilterModules,
 
     memset(FilterModules, 0, sizeof(*FilterModules) * FilterCnt);
 
-    for (i = 0; *ModuleNames[i] && i < SBN_MAX_FILTERS_PER_PEER; i++)
+    for (i = 0; i < SBN_MAX_FILTERS_PER_PEER && *ModuleNames[i]; i++)
     {
         SBN_ModuleIdx_t FilterIdx = 0;
         for (FilterIdx = 0; FilterIdx < FilterModuleCnt; FilterIdx++)
