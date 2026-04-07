@@ -199,7 +199,7 @@ int SBN_SPWRcvMsg(SBN_InterfaceData *Peer, NetDataUnion *DataMsgBuf)
 {
     SPW_SBNPeerData_t *peer = Peer->PeerData;
     int                dataRead;
-    int                error;
+    int                error  = SPW_FREAD_NO_ERROR;
 
     dataRead = SPW_GetData(peer->spwEntry, (*void)ProtoMsgBuf, SBN_MAX_MSG_SZ, &error);
 
