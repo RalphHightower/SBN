@@ -30,7 +30,7 @@
  */
 SBN_Status_t SBN_SendSubsRequests(void)
 {
-    CFE_Status_t            CFE_Status = CFE_SUCCESS;
+    CFE_Status_t            CFE_Status;
     CFE_MSG_CommandHeader_t CmdMsg;
 
     /* Turn on SB subscription reporting */
