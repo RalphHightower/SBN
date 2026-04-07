@@ -207,7 +207,8 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
     SBN.Subs[SBN.SubCnt].QoS      = QoS;
     SBN.SubCnt++;
 
-    int NetIdx = 0, PeerIdx = 0;
+    int NetIdx;
+    int PeerIdx;
     for (NetIdx = 0; NetIdx < SBN.NetCnt; NetIdx++)
     {
         SBN_NetInterface_t *Net = &SBN.Nets[NetIdx];
