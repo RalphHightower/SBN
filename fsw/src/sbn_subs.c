@@ -32,9 +32,16 @@ SBN_Status_t SBN_SendSubsRequests(void)
 {
     CFE_Status_t            CFE_Status = CFE_SUCCESS;
     CFE_MSG_CommandHeader_t CmdMsg;
+    static CFE_SB_MsgId_t   SB_SUB_RPT_CTRL_MID = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(SB_SUB_RPT_CTRL_MID))
+    {
+        SB_SUB_RPT_CTRL_MID = CFE_SB_ValueToMsgId(CFE_SB_SUB_RPT_CTRL_MID);
+    }
 
     /* Turn on SB subscription reporting */
-    CFE_MSG_Init((CFE_MSG_Message_t *)&CmdMsg, CFE_SB_ValueToMsgId(CFE_SB_SUB_RPT_CTRL_MID), sizeof(CmdMsg));
+    CFE_MSG_Init((CFE_MSG_Message_t *)&CmdMsg, SB_SUB_RPT_CTRL_MID, sizeof(CmdMsg));
     CFE_MSG_SetFcnCode((CFE_MSG_Message_t *)&CmdMsg, CFE_SB_ENABLE_SUB_REPORTING_CC);
     CFE_Status = CFE_SB_TransmitMsg((CFE_MSG_Message_t *)&CmdMsg, true);
     if (CFE_Status != CFE_SUCCESS)
@@ -167,18 +174,35 @@ static int IsPeerSubMsgID(int *SubIdxPtr, CFE_SB_MsgId_t MsgID, SBN_PeerInterfac
  */
 static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t          SBN_Status          = SBN_SUCCESS;
+    static CFE_SB_MsgId_t LCMD_MID            = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHK_TLM_MID         = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKNET_TLM_MID      = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKPEER_TLM_MID     = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKMYSUBS_TLM_MID   = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKPEERSUBS_TLM_MID = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t EVENT_MSG_MID       = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(LCMD_MID))
+    {
+        LCMD_MID            = CFE_SB_ValueToMsgId(SBN_CMD_MID);
+        LHK_TLM_MID         = CFE_SB_ValueToMsgId(SBN_HK_TLM_MID);
+        LHKNET_TLM_MID      = CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID);
+        LHKPEER_TLM_MID     = CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID);
+        LHKMYSUBS_TLM_MID   = CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID);
+        LHKPEERSUBS_TLM_MID = CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID);
+        EVENT_MSG_MID       = CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID);
+    }
+
     /* don't send event messages */
-    if (CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID)))
+    if (CFE_SB_MsgId_Equal(MsgID, EVENT_MSG_MID))
         return SBN_SUCCESS;
 
     /* don't send SBN messages */
-    if (CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_CMD_MID))
-        || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HK_TLM_MID))
-        || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID))
-        || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID))
-        || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID))
-        || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID)))
+    if (CFE_SB_MsgId_Equal(MsgID, LCMD_MID) || CFE_SB_MsgId_Equal(MsgID, LHK_TLM_MID)
+        || CFE_SB_MsgId_Equal(MsgID, LHKNET_TLM_MID) || CFE_SB_MsgId_Equal(MsgID, LHKPEER_TLM_MID)
+        || CFE_SB_MsgId_Equal(MsgID, LHKMYSUBS_TLM_MID) || CFE_SB_MsgId_Equal(MsgID, LHKPEERSUBS_TLM_MID))
         return SBN_SUCCESS;
 
     int SubIdx = 0;
@@ -307,6 +331,15 @@ SBN_Status_t SBN_CheckSubscriptionPipe(void)
     CFE_SB_AllSubscriptionsTlm_t   *MsgPtr       = NULL; /* largest message format */
     CFE_SB_SingleSubscriptionTlm_t *SingleMsgPtr = NULL; /* utility "cast" */
     CFE_SB_MsgId_t                  MsgId;
+    static CFE_SB_MsgId_t           SB_ONESUB_TLM_MID  = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t           SB_ALLSUBS_TLM_MID = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(SB_ONESUB_TLM_MID))
+    {
+        SB_ONESUB_TLM_MID  = CFE_SB_ValueToMsgId(CFE_SB_ONESUB_TLM_MID);
+        SB_ALLSUBS_TLM_MID = CFE_SB_ValueToMsgId(CFE_SB_ALLSUBS_TLM_MID);
+    }
 
     CFE_Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t **)&MsgPtr, SBN.SubPipe, CFE_SB_POLL);
     switch (CFE_Status)
@@ -319,7 +352,7 @@ SBN_Status_t SBN_CheckSubscriptionPipe(void)
                 return SBN_ERROR;
             }
 
-            if (CFE_SB_MsgId_Equal(MsgId, CFE_SB_ValueToMsgId(CFE_SB_ONESUB_TLM_MID)))
+            if (CFE_SB_MsgId_Equal(MsgId, SB_ONESUB_TLM_MID))
             {
                 SingleMsgPtr = (CFE_SB_SingleSubscriptionTlm_t *)MsgPtr;
                 switch (SingleMsgPtr->Payload.SubType)
@@ -335,7 +368,7 @@ SBN_Status_t SBN_CheckSubscriptionPipe(void)
                         return SBN_ERROR;
                 } /* end switch */
             }
-            else if (CFE_SB_MsgId_Equal(MsgId, CFE_SB_ValueToMsgId(CFE_SB_ALLSUBS_TLM_MID)))
+            else if (CFE_SB_MsgId_Equal(MsgId, SB_ALLSUBS_TLM_MID))
             {
                 return SBN_ProcessAllSubscriptions(MsgPtr);
             }
