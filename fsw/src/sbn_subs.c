@@ -453,7 +453,7 @@ static SBN_Status_t ProcessSubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t
  */
 SBN_Status_t SBN_ProcessSubsFromPeer(SBN_PeerInterface_t *Peer, void *Msg)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t SBN_Status;
     Pack_t       Pack;
     char         VersionHash[SBN_IDENT_LEN];
 
