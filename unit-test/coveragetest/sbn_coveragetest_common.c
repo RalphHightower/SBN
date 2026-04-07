@@ -18,8 +18,11 @@
 
 #include "sbn_coveragetest_common.h"
 
-int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
-                         va_list va)
+int32 UT_CheckEvent_Hook(void                   *UserObj,
+                         int32                   StubRetcode,
+                         uint32                  CallCount,
+                         const UT_StubContext_t *Context,
+                         va_list                 va)
 {
     UT_CheckEvent_t *State = UserObj;
     char             TestText[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH];
@@ -99,9 +102,12 @@ SBN_Status_t InitPeer_Nominal(SBN_PeerInterface_t *Peer)
     return SBN_SUCCESS;
 } /* end InitPeer_Nominal() */
 
-SBN_Status_t RecvFromNet_Nominal(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                 CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                 void *PayloadBuffer)
+SBN_Status_t RecvFromNet_Nominal(SBN_NetInterface_t *Net,
+                                 SBN_MsgType_t      *MsgTypePtr,
+                                 SBN_MsgSz_t        *MsgSzPtr,
+                                 CFE_ProcessorID_t  *ProcessorIDPtr,
+                                 CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                 void               *PayloadBuffer)
 {
     *ProcessorIDPtr = 1235;
 
@@ -138,17 +144,17 @@ SBN_Status_t Send_Err(SBN_PeerInterface_t *Peer, SBN_MsgType_t MsgType, SBN_MsgS
     return SBN_ERROR;
 } /* end Send_Err() */
 
-SBN_IfOps_t IfOps = {.InitModule   = ProtoInitModule_Nominal,
-                     .InitNet      = InitNet_Nominal,
-                     .InitPeer     = InitPeer_Nominal,
-                     .LoadNet      = LoadNet_Nominal,
-                     .LoadPeer     = LoadPeer_Nominal,
-                     .PollPeer     = PollPeer_Nominal,
-                     .Send         = Send_Nominal,
-                     .RecvFromPeer = NULL,
-                     .RecvFromNet  = RecvFromNet_Nominal,
-                     .UnloadNet    = UnloadNet_Nominal,
-                     .UnloadPeer   = UnloadPeer_Nominal}; /* end IfOps */
+SBN_IfOps_t IfOps = { .InitModule   = ProtoInitModule_Nominal,
+                      .InitNet      = InitNet_Nominal,
+                      .InitPeer     = InitPeer_Nominal,
+                      .LoadNet      = LoadNet_Nominal,
+                      .LoadPeer     = LoadPeer_Nominal,
+                      .PollPeer     = PollPeer_Nominal,
+                      .Send         = Send_Nominal,
+                      .RecvFromPeer = NULL,
+                      .RecvFromNet  = RecvFromNet_Nominal,
+                      .UnloadNet    = UnloadNet_Nominal,
+                      .UnloadPeer   = UnloadPeer_Nominal }; /* end IfOps */
 
 SBN_IfOps_t *IfOpsPtr = &IfOps;
 
@@ -157,10 +163,10 @@ SBN_Status_t FilterInitModule_Nominal(int FilterVersion, CFE_EVS_EventID_t BaseE
     return SBN_SUCCESS;
 } /* end InitFilterModule() */
 
-SBN_FilterInterface_t FilterInterface = {.InitModule = FilterInitModule_Nominal,
-                                         .FilterRecv = NULL,
-                                         .FilterSend = NULL,
-                                         .RemapMID   = NULL}; /* end FilterInterface */
+SBN_FilterInterface_t FilterInterface = { .InitModule = FilterInitModule_Nominal,
+                                          .FilterRecv = NULL,
+                                          .FilterSend = NULL,
+                                          .RemapMID   = NULL }; /* end FilterInterface */
 
 SBN_FilterInterface_t *FilterInterfacePtr = &FilterInterface;
 
@@ -213,7 +219,7 @@ SBN_PeerInterface_t *PeerPtr      = NULL;
  */
 int32 SymLookHook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context)
 {
-    static char LastSeen[32] = {0};
+    static char LastSeen[32] = { 0 };
     char       *SymbolName   = (char *)Context->ArgPtr[1];
 
     /* this forces the LoadConf_Module() function to call ModuleLoad */

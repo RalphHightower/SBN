@@ -31,9 +31,9 @@
 /* for string allocation, unless you want it dynamic... */
 #define SBN_SPW_MAX_PATH_LENGTH 4096
 /* sprintf format for Sysfs path to spacewire status files */
-#define SBN_SPW_SYSFS_PATH "/sys/class/%s/%s/device/"
+#define SBN_SPW_SYSFS_PATH      "/sys/class/%s/%s/device/"
 /*sprintf format for dev path to spacewire device file */
-#define SBN_SPW_DEV_PATH "/dev/%s"
+#define SBN_SPW_DEV_PATH        "/dev/%s"
 
 /* SpaceWire status file names in Sysfs */
 #define SBN_SPW_LINK_STATUS       "link_status"
@@ -49,14 +49,19 @@ int32 SBN_CheckForSPWNetProtoMsg(SBN_InterfaceData *Peer, SBN_NetProtoMsg_t *Pro
 int   SBN_SPWRcvMsg(SBN_InterfaceData *Host, NetDataUnion *DataMsgBuf);
 int32 SBN_ParseSPWFileEntry(char *FileEntry, uint32 LineNum, void **EntryAddr);
 int32 SBN_InitSPWIF(SBN_InterfaceData *data);
-int32 SBN_SendSPWNetMsg(uint32 MsgType, uint32 MsgSz, SBN_InterfaceData *HostList[], int32 NumHosts,
-                        CFE_SB_SenderId_t *SenderPtr, SBN_InterfaceData *IfData, SBN_NetProtoMsg_t *ProtoMsgBuf,
-                        NetDataUnion *DataMsgBuf);
+int32 SBN_SendSPWNetMsg(uint32             MsgType,
+                        uint32             MsgSz,
+                        SBN_InterfaceData *HostList[],
+                        int32              NumHosts,
+                        CFE_SB_SenderId_t *SenderPtr,
+                        SBN_InterfaceData *IfData,
+                        SBN_NetProtoMsg_t *ProtoMsgBuf,
+                        NetDataUnion      *DataMsgBuf);
 int32 SPW_VerifyPeerInterface(SBN_InterfaceData *Peer, SBN_InterfaceData *HostList[], int32 NumHosts);
 int32 SPW_VerifyHostInterface(SBN_InterfaceData *Host, SBN_PeerData_t *PeerList, int32 NumPeers);
 
-SBN_InterfaceOperations SPWOps = {SBN_ParseSPWFileEntry,      SBN_InitSPWIF, SBN_SendSPWNetMsg,
-                                  SBN_CheckForSPWNetProtoMsg, SBN_SPWRcvMsg, SPW_VerifyPeerInterface,
-                                  SPW_VerifyHostInterface};
+SBN_InterfaceOperations SPWOps = { SBN_ParseSPWFileEntry,      SBN_InitSPWIF, SBN_SendSPWNetMsg,
+                                   SBN_CheckForSPWNetProtoMsg, SBN_SPWRcvMsg, SPW_VerifyPeerInterface,
+                                   SPW_VerifyHostInterface };
 
 #endif /* _sbn_spw_if_h_ */

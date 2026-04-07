@@ -46,11 +46,11 @@
 */
 #define SBN_CMD_MID 0x18FA
 
-#define SBN_HK_TLM_MID          0x08FB
-#define SBN_HKNET_TLM_MID       0x08FC
-#define SBN_HKPEER_TLM_MID      0x08FD
-#define SBN_HKMYSUBS_TLM_MID    0x08FE
-#define SBN_HKPEERSUBS_TLM_MID  0x08FF
+#define SBN_HK_TLM_MID         0x08FB
+#define SBN_HKNET_TLM_MID      0x08FC
+#define SBN_HKPEER_TLM_MID     0x08FD
+#define SBN_HKMYSUBS_TLM_MID   0x08FE
+#define SBN_HKPEERSUBS_TLM_MID 0x08FF
 
 /*
 ** Include Files

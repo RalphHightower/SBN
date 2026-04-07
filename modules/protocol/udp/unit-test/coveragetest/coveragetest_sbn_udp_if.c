@@ -71,8 +71,12 @@ static SBN_Status_t SendNetMsgCallback(SBN_MsgType_t type, SBN_MsgSz_t size, voi
     return SBN_SUCCESS;
 }
 
-static void PackMsgCallback(void *buf, SBN_MsgSz_t size, SBN_MsgType_t type, CFE_ProcessorID_t procID,
-                            CFE_SpacecraftID_t scID, void *payload)
+static void PackMsgCallback(void              *buf,
+                            SBN_MsgSz_t        size,
+                            SBN_MsgType_t      type,
+                            CFE_ProcessorID_t  procID,
+                            CFE_SpacecraftID_t scID,
+                            void              *payload)
 {
     return;
 }
@@ -96,8 +100,8 @@ extern SBN_IfOps_t SBN_UDP_Ops;
 /*
  * An example hook function to check for a specific event.
  */
-static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
-                                va_list va)
+static int32
+UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context, va_list va)
 {
     UT_CheckEvent_t *State = UserObj;
     char             TestText[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH];
@@ -526,8 +530,12 @@ static void Recv_SockRecvErr(void)
     UT_TEST_FUNCTION_RC(SBN_UDP_Ops.RecvFromNet(NetPtr, NULL, NULL, NULL, NULL, NULL), SBN_ERROR);
 } /* end Recv_SockRecvErr() */
 
-static bool SBN_UnpackMsg_Fail(void *RecvBuf, SBN_MsgSz_t *MsgSzPtr, SBN_MsgType_t *MsgTypePtr,
-                               CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr, void *Payload)
+static bool SBN_UnpackMsg_Fail(void               *RecvBuf,
+                               SBN_MsgSz_t        *MsgSzPtr,
+                               SBN_MsgType_t      *MsgTypePtr,
+                               CFE_ProcessorID_t  *ProcessorIDPtr,
+                               CFE_SpacecraftID_t *SpacecraftIDPtr,
+                               void               *Payload)
 {
     return false;
 }
@@ -610,14 +618,18 @@ static SBN_Status_t MockSendNetMsg_Test(SBN_MsgType_t MsgType, SBN_MsgSz_t MsgSz
 {
     return SBN_SUCCESS;
 }
-static void MockPackMsg_Test(void *SBNBuf, SBN_MsgSz_t MsgSz, SBN_MsgType_t MsgType, CFE_ProcessorID_t ProcessorID,
-                             CFE_ProcessorID_t SpacecraftID, void *Msg)
+static void MockPackMsg_Test(void             *SBNBuf,
+                             SBN_MsgSz_t       MsgSz,
+                             SBN_MsgType_t     MsgType,
+                             CFE_ProcessorID_t ProcessorID,
+                             CFE_ProcessorID_t SpacecraftID,
+                             void             *Msg)
 {
 }
 
 /* Mock GetPeer that returns our test peer */
-static SBN_PeerInterface_t *MockGetPeer_NewConn(SBN_NetInterface_t *Net, CFE_ProcessorID_t ProcessorID,
-                                                CFE_SpacecraftID_t SpacecraftID)
+static SBN_PeerInterface_t *
+MockGetPeer_NewConn(SBN_NetInterface_t *Net, CFE_ProcessorID_t ProcessorID, CFE_SpacecraftID_t SpacecraftID)
 {
     if (ProcessorID == PeerPtr->ProcessorID && SpacecraftID == PeerPtr->SpacecraftID)
     {
@@ -627,8 +639,8 @@ static SBN_PeerInterface_t *MockGetPeer_NewConn(SBN_NetInterface_t *Net, CFE_Pro
 }
 
 /* Mock GetPeer that returns our test peer */
-static SBN_PeerInterface_t *MockGetPeer_Disconnect(SBN_NetInterface_t *Net, CFE_ProcessorID_t ProcessorID,
-                                                   CFE_SpacecraftID_t SpacecraftID)
+static SBN_PeerInterface_t *
+MockGetPeer_Disconnect(SBN_NetInterface_t *Net, CFE_ProcessorID_t ProcessorID, CFE_SpacecraftID_t SpacecraftID)
 {
     if (ProcessorID == PeerPtr->ProcessorID && SpacecraftID == PeerPtr->SpacecraftID)
     {
@@ -638,9 +650,12 @@ static SBN_PeerInterface_t *MockGetPeer_Disconnect(SBN_NetInterface_t *Net, CFE_
 }
 
 /* Configurable mock UnpackMsg */
-static bool MockUnpackMsg_Configurable(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_MsgType_t *MsgTypePtr,
-                                       CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                       void *Msg)
+static bool MockUnpackMsg_Configurable(void               *SBNBuf,
+                                       SBN_MsgSz_t        *MsgSzPtr,
+                                       SBN_MsgType_t      *MsgTypePtr,
+                                       CFE_ProcessorID_t  *ProcessorIDPtr,
+                                       CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                       void               *Msg)
 {
     if (g_MockUnpackResult && MsgSzPtr && MsgTypePtr && ProcessorIDPtr && SpacecraftIDPtr)
     {
@@ -657,8 +672,12 @@ static bool MockUnpackMsg_Configurable(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_
 }
 
 /* Mock UnpackMsg that returns disconnect message data */
-static bool MockUnpackMsg_Disconnect(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_MsgType_t *MsgTypePtr,
-                                     CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr, void *Msg)
+static bool MockUnpackMsg_Disconnect(void               *SBNBuf,
+                                     SBN_MsgSz_t        *MsgSzPtr,
+                                     SBN_MsgType_t      *MsgTypePtr,
+                                     CFE_ProcessorID_t  *ProcessorIDPtr,
+                                     CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                     void               *Msg)
 {
     *MsgSzPtr        = 16;
     *MsgTypePtr      = SBN_UDP_DISCONN_MSG; /* Return disconnect message type */
@@ -668,8 +687,12 @@ static bool MockUnpackMsg_Disconnect(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_Ms
     return true;
 }
 
-static bool MockUnpackMsg_Nominal(void *SBNBuf, SBN_MsgSz_t *MsgSzPtr, SBN_MsgType_t *MsgTypePtr,
-                                  CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr, void *Msg)
+static bool MockUnpackMsg_Nominal(void               *SBNBuf,
+                                  SBN_MsgSz_t        *MsgSzPtr,
+                                  SBN_MsgType_t      *MsgTypePtr,
+                                  CFE_ProcessorID_t  *ProcessorIDPtr,
+                                  CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                  void               *Msg)
 {
     *MsgSzPtr        = 16;
     *MsgTypePtr      = SBN_APP_MSG; /* Regular app message */
@@ -748,8 +771,8 @@ static SBN_Status_t DisconnectCallback_TrackCalled(SBN_PeerInterface_t *Peer)
     return SBN_SUCCESS;
 }
 
-static SBN_Status_t SendNetMsgCallback_CheckDisconnMsg(SBN_MsgType_t MsgType, SBN_MsgSz_t MsgSz, void *Msg,
-                                                       SBN_PeerInterface_t *Peer)
+static SBN_Status_t
+SendNetMsgCallback_CheckDisconnMsg(SBN_MsgType_t MsgType, SBN_MsgSz_t MsgSz, void *Msg, SBN_PeerInterface_t *Peer)
 {
     /* Verify a disconnect message was sent */
     UtAssert_INT32_EQ(MsgType, SBN_UDP_DISCONN_MSG);
@@ -935,7 +958,9 @@ void UT_Setup(void)
 /*
  * Teardown function after every test
  */
-void UT_TearDown(void) {}
+void UT_TearDown(void)
+{
+}
 
 void UtTest_Setup(void)
 {
