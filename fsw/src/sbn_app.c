@@ -509,9 +509,13 @@ SBN_Status_t SBN_RecvNetMsgs(void)
 
                     memset(SBN.MsgBuffer, 0, sizeof(SBN.MsgBuffer));
 
-                    SBN_Status =
-                        Net->IfOps
-                            ->RecvFromPeer(Net, Peer, &PeerMsgType, &PeerMsgSz, &PeerProcessorID, &PeerSpacecraftID, SBN.MsgBuffer);
+                    SBN_Status = Net->IfOps->RecvFromPeer(Net,
+                                                          Peer,
+                                                          &PeerMsgType,
+                                                          &PeerMsgSz,
+                                                          &PeerProcessorID,
+                                                          &PeerSpacecraftID,
+                                                          SBN.MsgBuffer);
 
                     if (SBN_Status == SBN_IF_EMPTY)
                     {
@@ -520,7 +524,12 @@ SBN_Status_t SBN_RecvNetMsgs(void)
 
                     OS_GetLocalTime(&Peer->LastRecv);
 
-                    SBN_Status = SBN_ProcessNetMsg(Net, PeerMsgType, PeerProcessorID, PeerSpacecraftID, PeerMsgSz, SBN.MsgBuffer);
+                    SBN_Status = SBN_ProcessNetMsg(Net,
+                                                   PeerMsgType,
+                                                   PeerProcessorID,
+                                                   PeerSpacecraftID,
+                                                   PeerMsgSz,
+                                                   SBN.MsgBuffer);
 
                     if (SBN_Status != SBN_SUCCESS)
                     {
@@ -1095,9 +1104,9 @@ static cpuaddr LoadConf_Module(SBN_Module_Entry_t *e, CFE_ES_ModuleID_t *ModuleI
  * @param[out] Filters - The function pointers for the filters requested.
  * @return The number of entries in Filters.
  */
-static SBN_ModuleIdx_t LoadConf_Filters(SBN_Module_Entry_t     *FilterModules,
-                                        SBN_ModuleIdx_t         FilterModuleCnt,
-                                        SBN_FilterInterface_t **ConfFilters,     // cppcheck-suppress constParameter
+static SBN_ModuleIdx_t LoadConf_Filters(SBN_Module_Entry_t           *FilterModules,
+                                        SBN_ModuleIdx_t               FilterModuleCnt,
+                                        SBN_FilterInterface_t *const *ConfFilters,
                                         char ModuleNames[SBN_MAX_FILTERS_PER_PEER][SBN_MAX_MOD_NAME_LEN],
                                         SBN_FilterInterface_t **Filters)
 {
