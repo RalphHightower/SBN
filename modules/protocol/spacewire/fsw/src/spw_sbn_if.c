@@ -100,6 +100,8 @@ int SPW_GetData(SPW_SBNEntry_t spwEntry, void *dataBuffer, int dataSz, int *erro
     dataRead = fread(dataBuffer, 1, dataSz, fp);
     &error   = ferror(fp);
 
+    fclose(fp);
+
     if (error == SPW_FREAD_NO_ERROR)
     {
         return dataRead;
@@ -140,6 +142,8 @@ int SPW_SendData(SPW_SBNEntry_t spwEntry, void *dataBuffer, int dataSz, int *err
     dataRead = fwrite(dataBuffer, 1, dataSz, fp);
     &error   = ferror(fp);
 
+    fclose(fp);
+
     if (error == SPW_FREAD_NO_ERROR)
     {
         return dataRead;
@@ -159,7 +163,7 @@ int32 SBN_CheckForSPWNetProtoMsg(SBN_InterfaceData *Peer, SBN_NetProtoMsg_t *Pro
 {
     SPW_SBNPeerData_t *peer = Peer->PeerData;
     int                linkStatus, dataRead;
-    int                error;
+    int                error = SPW_FREAD_NO_ERROR;
 
     dataRead = SPW_GetData(peer->spwEntry, (*void)ProtoMsgBuf, sizeof(SBN_NetProtoMsg_t), &error);
     if (dataRead > 0 && error == SPW_FREAD_NO_ERROR)
@@ -195,7 +199,7 @@ int SBN_SPWRcvMsg(SBN_InterfaceData *Peer, NetDataUnion *DataMsgBuf)
 {
     SPW_SBNPeerData_t *peer = Peer->PeerData;
     int                dataRead;
-    int                error;
+    int                error  = SPW_FREAD_NO_ERROR;
 
     dataRead = SPW_GetData(peer->spwEntry, (*void)ProtoMsgBuf, SBN_MAX_MSG_SZ, &error);
 

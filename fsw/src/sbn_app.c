@@ -502,16 +502,16 @@ SBN_Status_t SBN_RecvNetMsgs(void)
                 // TODO: make configurable
                 for (MsgCnt = 0; MsgCnt < 100; MsgCnt++) /* read at most 100 messages from peer */
                 {
-                    CFE_ProcessorID_t  ProcessorID  = 0;
-                    CFE_SpacecraftID_t SpacecraftID = 0;
-                    SBN_MsgType_t      MsgType      = 0;
-                    SBN_MsgSz_t        MsgSz        = 0;
+                    CFE_ProcessorID_t  PeerProcessorID  = 0;
+                    CFE_SpacecraftID_t PeerSpacecraftID = 0;
+                    SBN_MsgType_t      PeerMsgType      = 0;
+                    SBN_MsgSz_t        PeerMsgSz        = 0;
 
                     memset(SBN.MsgBuffer, 0, sizeof(SBN.MsgBuffer));
 
                     SBN_Status =
                         Net->IfOps
-                            ->RecvFromPeer(Net, Peer, &MsgType, &MsgSz, &ProcessorID, &SpacecraftID, SBN.MsgBuffer);
+                            ->RecvFromPeer(Net, Peer, &PeerMsgType, &PeerMsgSz, &PeerProcessorID, &PeerSpacecraftID, SBN.MsgBuffer);
 
                     if (SBN_Status == SBN_IF_EMPTY)
                     {
@@ -520,7 +520,7 @@ SBN_Status_t SBN_RecvNetMsgs(void)
 
                     OS_GetLocalTime(&Peer->LastRecv);
 
-                    SBN_Status = SBN_ProcessNetMsg(Net, MsgType, ProcessorID, SpacecraftID, MsgSz, SBN.MsgBuffer);
+                    SBN_Status = SBN_ProcessNetMsg(Net, PeerMsgType, PeerProcessorID, PeerSpacecraftID, PeerMsgSz, SBN.MsgBuffer);
 
                     if (SBN_Status != SBN_SUCCESS)
                     {
@@ -713,7 +713,8 @@ void SBN_SendTask(void)
 static SBN_Status_t CheckPeerPipes(void)
 {
     CFE_Status_t       CFE_Status;
-    int                ReceivedFlag = 0, iter = 0;
+    int                ReceivedFlag;
+    int                iter      = 0;
     CFE_MSG_Message_t *MsgPtr    = NULL;
     CFE_MSG_Size_t     MsgSz     = 0;
     SBN_MsgSz_t        SBN_MsgSz = 0;
@@ -1096,7 +1097,7 @@ static cpuaddr LoadConf_Module(SBN_Module_Entry_t *e, CFE_ES_ModuleID_t *ModuleI
  */
 static SBN_ModuleIdx_t LoadConf_Filters(SBN_Module_Entry_t     *FilterModules,
                                         SBN_ModuleIdx_t         FilterModuleCnt,
-                                        SBN_FilterInterface_t **ConfFilters,
+                                        SBN_FilterInterface_t **ConfFilters,     // cppcheck-suppress constParameter
                                         char ModuleNames[SBN_MAX_FILTERS_PER_PEER][SBN_MAX_MOD_NAME_LEN],
                                         SBN_FilterInterface_t **Filters)
 {
@@ -1105,7 +1106,7 @@ static SBN_ModuleIdx_t LoadConf_Filters(SBN_Module_Entry_t     *FilterModules,
 
     memset(FilterModules, 0, sizeof(*FilterModules) * FilterCnt);
 
-    for (i = 0; *ModuleNames[i] && i < SBN_MAX_FILTERS_PER_PEER; i++)
+    for (i = 0; i < SBN_MAX_FILTERS_PER_PEER && *ModuleNames[i]; i++)
     {
         SBN_ModuleIdx_t FilterIdx = 0;
         for (FilterIdx = 0; FilterIdx < FilterModuleCnt; FilterIdx++)
@@ -1681,7 +1682,7 @@ void SBN_AppMain(void)
  * @param[in] MsgType The type of the message (application data, SBN protocol)
  * @param[in] ProcessorID The ProcessorID to send this message to.
  * @param[in] SpacecraftID The SpacecraftID to send this message to.
- * @param[in] MsgSize The size of the message (in bytes).
+ * @param[in] MsgSz The size of the message (in bytes).
  * @param[in] Msg The message contents.
  *
  * @return SBN_SUCCESS on successful processing, SBN_ERROR otherwise
@@ -1690,7 +1691,7 @@ SBN_Status_t SBN_ProcessNetMsg(SBN_NetInterface_t *Net,
                                SBN_MsgType_t       MsgType,
                                CFE_ProcessorID_t   ProcessorID,
                                CFE_SpacecraftID_t  SpacecraftID,
-                               SBN_MsgSz_t         MsgSize,
+                               SBN_MsgSz_t         MsgSz,
                                void               *Msg)
 {
     static const char    FAIL_PREFIX[] = "ERROR: could not process peer message:";

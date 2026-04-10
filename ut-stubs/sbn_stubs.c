@@ -42,6 +42,8 @@ bool SBN_UnpackMsg(void              *SBNBuf,
     uint32           status = 0;
     SBN_Unpack_Buf_t p;
 
+    memset(&p, 0, sizeof(p));
+
     status = UT_DEFAULT_IMPL(SBN_UnpackMsg);
 
     if (status >= 0)

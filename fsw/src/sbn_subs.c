@@ -30,7 +30,7 @@
  */
 SBN_Status_t SBN_SendSubsRequests(void)
 {
-    CFE_Status_t            CFE_Status = CFE_SUCCESS;
+    CFE_Status_t            CFE_Status;
     CFE_MSG_CommandHeader_t CmdMsg;
 
     /* Turn on SB subscription reporting */
@@ -207,7 +207,8 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
     SBN.Subs[SBN.SubCnt].QoS      = QoS;
     SBN.SubCnt++;
 
-    int NetIdx = 0, PeerIdx = 0;
+    int NetIdx;
+    int PeerIdx;
     for (NetIdx = 0; NetIdx < SBN.NetCnt; NetIdx++)
     {
         SBN_NetInterface_t *Net = &SBN.Nets[NetIdx];
@@ -240,7 +241,7 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
  */
 static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t SBN_Status;
     int          SubIdx;
 
     /* find idx of matching subscription */
@@ -273,7 +274,8 @@ static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
 
     /* send unsubscription to all peers if peer state is heartbeating and */
     /* only if no more local subs (InUseCtr = 0)  */
-    int NetIdx = 0, PeerIdx = 0;
+    int NetIdx;
+    int PeerIdx;
     for (NetIdx = 0; NetIdx < SBN.NetCnt; NetIdx++)
     {
         SBN_NetInterface_t *Net = &SBN.Nets[NetIdx];
@@ -451,7 +453,7 @@ static SBN_Status_t ProcessSubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t
  */
 SBN_Status_t SBN_ProcessSubsFromPeer(SBN_PeerInterface_t *Peer, void *Msg)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t SBN_Status;
     Pack_t       Pack;
     char         VersionHash[SBN_IDENT_LEN];
 
@@ -644,7 +646,7 @@ SBN_Status_t SBN_ProcessAllSubscriptions(CFE_SB_AllSubscriptionsTlm_t *Ptr)
 SBN_Status_t SBN_RemoveAllSubsFromPeer(SBN_PeerInterface_t *Peer)
 {
     int          i          = 0;
-    CFE_Status_t CFE_Status = CFE_SUCCESS;
+    CFE_Status_t CFE_Status;
 
     for (i = 0; i < Peer->SubCnt; i++)
     {
