@@ -2296,7 +2296,7 @@ static void ReloadConfTbl_Nominal(void)
     /* Set up mutex operations */
     UT_SetDeferredRetcode(UT_KEY(OS_MutSemTake), 1, OS_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(OS_MutSemGive), 1, OS_SUCCESS);
-    SBN.ConfMutex = 1; /* Valid non-zero value */
+    SBN.ConfMutex = OS_ObjectIdFromInteger(1); /* Valid non-zero value */
 
     /* Set up for Cleanup */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_DeletePipe), 1, CFE_SUCCESS);
