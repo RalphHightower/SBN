@@ -273,11 +273,18 @@ static void HKCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendDbg(SBN_CMD_EID, "hk command");
 
-    uint8              HKBuf[SBN_HK_LEN];
-    CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t             Pack;
+    uint8                 HKBuf[SBN_HK_LEN];
+    CFE_MSG_Message_t    *HKMsg = (CFE_MSG_Message_t *)HKBuf;
+    Pack_t                Pack;
+    static CFE_SB_MsgId_t HK_TLM_MID = CFE_SB_MSGID_RESERVED;
 
-    CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HK_TLM_MID), SBN_HK_LEN);
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(HK_TLM_MID))
+    {
+        HK_TLM_MID = CFE_SB_ValueToMsgId(SBN_HK_TLM_MID);
+    }
+
+    CFE_MSG_Init(HKMsg, HK_TLM_MID, SBN_HK_LEN);
 
     Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HK_LEN - sizeof(CFE_MSG_TelemetryHeader_t), 1);
 
@@ -323,11 +330,18 @@ static void HKNetCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendInfo(SBN_CMD_EID, "hk command, net=%d", NetIdx);
 
-    uint8              HKBuf[SBN_HKNET_LEN];
-    CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t             Pack;
+    uint8                 HKBuf[SBN_HKNET_LEN];
+    CFE_MSG_Message_t    *HKMsg = (CFE_MSG_Message_t *)HKBuf;
+    Pack_t                Pack;
+    static CFE_SB_MsgId_t HKNET_TLM_MID = CFE_SB_MSGID_RESERVED;
 
-    CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID), SBN_HKNET_LEN);
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(HKNET_TLM_MID))
+    {
+        HKNET_TLM_MID = CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID);
+    }
+
+    CFE_MSG_Init(HKMsg, HKNET_TLM_MID, SBN_HKNET_LEN);
 
     Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HKNET_LEN - sizeof(CFE_MSG_TelemetryHeader_t), 1);
 
@@ -384,11 +398,18 @@ static void HKPeerCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendInfo(SBN_CMD_EID, "hk command, net=%d, peer=%d", NetIdx, PeerIdx);
 
-    uint8              HKBuf[SBN_HKPEER_LEN];
-    CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t             Pack;
+    uint8                 HKBuf[SBN_HKPEER_LEN];
+    CFE_MSG_Message_t    *HKMsg = (CFE_MSG_Message_t *)HKBuf;
+    Pack_t                Pack;
+    static CFE_SB_MsgId_t HKPEER_TLM_MID = CFE_SB_MSGID_RESERVED;
 
-    CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID), SBN_HKPEER_LEN);
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(HKPEER_TLM_MID))
+    {
+        HKPEER_TLM_MID = CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID);
+    }
+
+    CFE_MSG_Init(HKMsg, HKPEER_TLM_MID, SBN_HKPEER_LEN);
 
     Pack_Init(&Pack, HKBuf + sizeof(CFE_MSG_TelemetryHeader_t), SBN_HKPEER_LEN - sizeof(CFE_MSG_TelemetryHeader_t), 1);
 
@@ -428,11 +449,18 @@ static void MySubsCmd(CFE_MSG_Message_t *MsgPtr)
 
     EVSSendInfo(SBN_CMD_EID, "hk subs command");
 
-    uint8              HKBuf[SBN_HKMYSUBS_LEN];
-    CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t             Pack;
+    uint8                 HKBuf[SBN_HKMYSUBS_LEN];
+    CFE_MSG_Message_t    *HKMsg = (CFE_MSG_Message_t *)HKBuf;
+    Pack_t                Pack;
+    static CFE_SB_MsgId_t HKMYSUBS_TLM_MID = CFE_SB_MSGID_RESERVED;
 
-    CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID), SBN_HKMYSUBS_LEN);
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(HKMYSUBS_TLM_MID))
+    {
+        HKMYSUBS_TLM_MID = CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID);
+    }
+
+    CFE_MSG_Init(HKMsg, HKMYSUBS_TLM_MID, SBN_HKMYSUBS_LEN);
 
     Pack_Init(&Pack,
               HKBuf + sizeof(CFE_MSG_TelemetryHeader_t),
@@ -520,11 +548,18 @@ static void PeerSubsCmd(CFE_MSG_Message_t *MsgPtr)
 
     SBN_PeerInterface_t *Peer = &SBN.Nets[NetIdx].Peers[PeerIdx];
 
-    uint8              HKBuf[SBN_HKPEERSUBS_LEN];
-    CFE_MSG_Message_t *HKMsg = (CFE_MSG_Message_t *)HKBuf;
-    Pack_t             Pack;
+    uint8                 HKBuf[SBN_HKPEERSUBS_LEN];
+    CFE_MSG_Message_t    *HKMsg = (CFE_MSG_Message_t *)HKBuf;
+    Pack_t                Pack;
+    static CFE_SB_MsgId_t HKPEERSUBS_TLM_MID = CFE_SB_MSGID_RESERVED;
 
-    CFE_MSG_Init(HKMsg, CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID), SBN_HKPEERSUBS_LEN);
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(HKPEERSUBS_TLM_MID))
+    {
+        HKPEERSUBS_TLM_MID = CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID);
+    }
+
+    CFE_MSG_Init(HKMsg, HKPEERSUBS_TLM_MID, SBN_HKPEERSUBS_LEN);
 
     Pack_Init(&Pack,
               HKBuf + sizeof(CFE_MSG_TelemetryHeader_t),
@@ -556,8 +591,15 @@ static void PeerSubsCmd(CFE_MSG_Message_t *MsgPtr)
 /*******************************************************************/
 void SBN_HandleCommand(CFE_MSG_Message_t *MsgPtr)
 {
-    CFE_SB_MsgId_t    MsgId;
-    CFE_MSG_FcnCode_t FcnCode = 0;
+    CFE_SB_MsgId_t        MsgId;
+    CFE_MSG_FcnCode_t     FcnCode = 0;
+    static CFE_SB_MsgId_t CMD_MID = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(CMD_MID))
+    {
+        CMD_MID = CFE_SB_ValueToMsgId(SBN_CMD_MID);
+    }
 
     if (CFE_MSG_GetMsgId(MsgPtr, &MsgId) != CFE_SUCCESS)
     {
@@ -566,7 +608,7 @@ void SBN_HandleCommand(CFE_MSG_Message_t *MsgPtr)
         return;
     }
 
-    if (!CFE_SB_MsgId_Equal(MsgId, CFE_SB_ValueToMsgId(SBN_CMD_MID)))
+    if (!CFE_SB_MsgId_Equal(MsgId, CMD_MID))
     {
         SBN.CmdErrCnt++;
         EVSSendErr(SBN_CMD_EID, "invalid command pipe MsgId");
