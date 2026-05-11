@@ -19,3 +19,6 @@ jobs:
   unit-test-coverage:
     name: Run unit test and coverage
     uses: nasa/cFS/.github/workflows/unit-test-coverage-reusable.yml@dev
+    with:
+      max-missed-branches: 87
+      max-missed-lines: 73

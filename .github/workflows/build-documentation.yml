@@ -1,15 +1,8 @@
 name: Build Documentation
 
+# SBN does not (yet) have a doxygen-based users guide
+# This workflow is for possible future use after one is added
 on:
-  push:
-    branches:
-      - dev
-      - main
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
   workflow_dispatch:
 
 jobs:
