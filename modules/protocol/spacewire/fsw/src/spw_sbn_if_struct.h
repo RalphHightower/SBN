@@ -24,8 +24,8 @@
 */
 typedef struct
 {
-    char     DevClass[SBN_SPW_MAX_CHAR_NAME]    /* e.g. 'spw' from /sys/class */
-        char DevInstance[SBN_SPW_MAX_CHAR_NAME] /* e.g. 'spw0' from /dev */
+    char DevClass[SBN_SPW_MAX_CHAR_NAME];    /* e.g. 'spw' from /sys/class */
+    char DevInstance[SBN_SPW_MAX_CHAR_NAME]; /* e.g. 'spw0' from /dev */
 } SPW_SBNEntry_t;
 
 typedef struct

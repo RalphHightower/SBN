@@ -1,14 +1,15 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <CFS_FOLDER>"
     exit 1
 fi
 
 CFS_ROOT="$1"
-pushd ../..
-export SBN_ROOT=$(pwd)
-popd
+
+SBN_ROOT="$(realpath "$SCRIPT_DIR/../..")"
 
 for app in to_lab sch_lab; do
     if [ ! -r "${CFS_ROOT}/apps/${app}" ]; then

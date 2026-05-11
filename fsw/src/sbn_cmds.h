@@ -36,13 +36,13 @@
 **  \par Assumptions, External Events, and Notes:
 **       None
 **
-**  \param [in]   MessagePtr   A #CFE_MSG_Message_t pointer that
-**                             references the software bus message
+**  \param [in]   MsgPtr   A #CFE_MSG_Message_t pointer that
+**                         references the software bus message
 **
 **  \sa #CFE_SB_ReceiveBuffer
 **
 *************************************************************************/
-void SBN_HandleCommand(CFE_MSG_Message_t *MessagePtr);
+void SBN_HandleCommand(CFE_MSG_Message_t *MsgPtr);
 
 /************************************************************************/
 /** \brief Reset telemetry counters to zero

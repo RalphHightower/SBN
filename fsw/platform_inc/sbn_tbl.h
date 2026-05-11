@@ -16,7 +16,7 @@
  * limitations under the License.
  ************************************************************************/
 
- #ifndef _sbn_tbl_h_
+#ifndef _sbn_tbl_h_
 #define _sbn_tbl_h_
 
 #include "cfe.h"

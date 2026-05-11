@@ -24,7 +24,7 @@
 #include "sbn_pack.h"
 
 /* #define STUB_TASKID 1073807361 */ /* TODO: should be replaced with a call to a stub util fn */
-CFE_SB_MsgId_t MsgID = {.Value = 0x1818};
+CFE_SB_MsgId_t MsgID = { .Value = 0x1818 };
 
 static SBN_ConfTbl_t TestConfTbl;
 
@@ -213,7 +213,8 @@ static void LoadConf_Module_ModLdErr(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
 
     START();
@@ -249,7 +250,8 @@ static void LoadConf_Module_SymLookErr(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
 
     START();
@@ -294,8 +296,8 @@ static void LoadConf_GetAddrErr(void)
     EVENT_CNT(1);
 } /* end LoadConf_GetAddrErr() */
 
-static SBN_Status_t ProtoInitErr_InitModule(int ProtocolVersion, CFE_EVS_EventID_t BaseEID,
-                                            SBN_ProtocolOutlet_t *Outlet)
+static SBN_Status_t
+ProtoInitErr_InitModule(int ProtocolVersion, CFE_EVS_EventID_t BaseEID, SBN_ProtocolOutlet_t *Outlet)
 {
     return 1;
 } /* end ProtoInitErr_InitModule */
@@ -323,7 +325,8 @@ static void LoadConf_ProtoInitErr(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
 
     START();
@@ -408,7 +411,8 @@ static void LoadConf_ProtoNameErr(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.Peers[0].SpacecraftID = 1234;
     TestConfTbl.Peers[0].ProcessorID  = 5678;
@@ -451,11 +455,13 @@ static void LoadConf_FiltNameErr(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     strncpy(TestConfTbl.FilterModules[0].Name, "CCSDS_Endian", sizeof(TestConfTbl.FilterModules[0].Name));
     strncpy(TestConfTbl.FilterModules[0].LibSymbol, "SBN_CCSDS_Ops", sizeof(TestConfTbl.FilterModules[0].LibSymbol));
-    strncpy(TestConfTbl.FilterModules[0].LibFileName, "/cf/sbn_ccsds.so",
+    strncpy(TestConfTbl.FilterModules[0].LibFileName,
+            "/cf/sbn_ccsds.so",
             sizeof(TestConfTbl.FilterModules[0].LibFileName));
     TestConfTbl.FilterModules[0].BaseEID = 2000;
     TestConfTbl.Peers[0].SpacecraftID    = 1234;
@@ -499,7 +505,8 @@ static void LoadConf_TooManyNets(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.Peers[0].SpacecraftID = 1234;
     TestConfTbl.Peers[0].ProcessorID  = 5678;
@@ -537,7 +544,8 @@ static void LoadConf_ReleaseAddrErr(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.Peers[0].SpacecraftID = 1234;
     TestConfTbl.Peers[0].ProcessorID  = 5678;
@@ -576,7 +584,8 @@ static void LoadConf_NetCntInc(void)
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.Peers[0].SpacecraftID = 1234;
     TestConfTbl.Peers[0].ProcessorID  = 5678;
@@ -697,17 +706,17 @@ static SBN_Status_t Mock_InitPeer(SBN_PeerInterface_t *Peer)
     return SBN_SUCCESS;
 }
 
-static SBN_IfOps_t MockIfOps = {.InitModule   = NULL,
-                                .InitNet      = Mock_InitNet,
-                                .InitPeer     = Mock_InitPeer,
-                                .LoadNet      = NULL,
-                                .LoadPeer     = NULL,
-                                .PollPeer     = NULL,
-                                .Send         = NULL,
-                                .RecvFromNet  = NULL,
-                                .RecvFromPeer = NULL,
-                                .UnloadNet    = Mock_UnloadNet,
-                                .UnloadPeer   = NULL};
+static SBN_IfOps_t MockIfOps = { .InitModule   = NULL,
+                                 .InitNet      = Mock_InitNet,
+                                 .InitPeer     = Mock_InitPeer,
+                                 .LoadNet      = NULL,
+                                 .LoadPeer     = NULL,
+                                 .PollPeer     = NULL,
+                                 .Send         = NULL,
+                                 .RecvFromNet  = NULL,
+                                 .RecvFromPeer = NULL,
+                                 .UnloadNet    = Mock_UnloadNet,
+                                 .UnloadPeer   = NULL };
 
 /* Hook function to modify SBN after LoadConf completes but before InitInterfaces */
 static int32 SetupNetConfErr_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context)
@@ -773,9 +782,13 @@ static void InitInt_NetConfErr(void)
     EVENT_CNT(1);
 } /* end InitInt_NetConfErr() */
 
-static SBN_Status_t RecvFromPeer_Nominal(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgType_t *MsgTypePtr,
-                                         SBN_MsgSz_t *MsgSzPtr, CFE_ProcessorID_t *ProcessorIDPtr,
-                                         CFE_SpacecraftID_t *SpacecraftIDPtr, void *PayloadBuffer)
+static SBN_Status_t RecvFromPeer_Nominal(SBN_NetInterface_t  *Net,
+                                         SBN_PeerInterface_t *Peer,
+                                         SBN_MsgType_t       *MsgTypePtr,
+                                         SBN_MsgSz_t         *MsgSzPtr,
+                                         CFE_ProcessorID_t   *ProcessorIDPtr,
+                                         CFE_SpacecraftID_t  *SpacecraftIDPtr,
+                                         void                *PayloadBuffer)
 {
     return SBN_SUCCESS;
 } /* end RecvFromPeer_Nominal() */
@@ -1355,7 +1368,8 @@ static void PeerPoll_RecvNetTask_ChildTaskErr(void)
     /* Set up protocol module */
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
 
@@ -1514,7 +1528,8 @@ static void PeerPoll_RecvPeerTask_ChildTaskErr(void)
     /* Set up protocol module */
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
 
@@ -1925,7 +1940,7 @@ static void ProcessNetMsg_SubMsg_Nominal(void)
     Pack_Data(&Pack, (void *)SBN_IDENT, SBN_IDENT_LEN);
     Pack_UInt16(&Pack, 1);
     Pack_MsgID(&Pack, MsgID);
-    CFE_SB_Qos_t QoS = {0};
+    CFE_SB_Qos_t QoS = { 0 };
     Pack_Data(&Pack, (void *)&QoS, sizeof(QoS));
 
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_GetProcessorId), 1, ProcessorID);
@@ -2239,7 +2254,8 @@ static void ReloadConfTbl_Nominal(void)
     /* Set up protocol module */
     strncpy(TestConfTbl.ProtocolModules[0].Name, "UDP", sizeof(TestConfTbl.ProtocolModules[0].Name));
     strncpy(TestConfTbl.ProtocolModules[0].LibSymbol, "SBN_UDP_Ops", sizeof(TestConfTbl.ProtocolModules[0].LibSymbol));
-    strncpy(TestConfTbl.ProtocolModules[0].LibFileName, "/cf/sbn_udp.so",
+    strncpy(TestConfTbl.ProtocolModules[0].LibFileName,
+            "/cf/sbn_udp.so",
             sizeof(TestConfTbl.ProtocolModules[0].LibFileName));
     TestConfTbl.ProtocolModules[0].BaseEID = 1234;
 
@@ -2280,7 +2296,7 @@ static void ReloadConfTbl_Nominal(void)
     /* Set up mutex operations */
     UT_SetDeferredRetcode(UT_KEY(OS_MutSemTake), 1, OS_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(OS_MutSemGive), 1, OS_SUCCESS);
-    SBN.ConfMutex = 1; /* Valid non-zero value */
+    SBN.ConfMutex = OS_ObjectIdFromInteger(1); /* Valid non-zero value */
 
     /* Set up for Cleanup */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_DeletePipe), 1, CFE_SUCCESS);
@@ -2320,7 +2336,7 @@ static void Unpack_Empty(void)
 
     UT_ResetState(0);
 
-    uint8              Buf[SBN_MAX_PACKED_MSG_SZ] = {0}, Payload[1] = {0};
+    uint8              Buf[SBN_MAX_PACKED_MSG_SZ] = { 0 }, Payload[1] = { 0 };
     SBN_MsgSz_t        MsgSz;
     SBN_MsgType_t      MsgType;
     CFE_ProcessorID_t  ProcID;
@@ -2340,7 +2356,7 @@ static void Unpack_Err(void)
 
     UT_ResetState(0);
 
-    uint8              Buf[SBN_MAX_PACKED_MSG_SZ] = {0}, Payload[1] = {0};
+    uint8              Buf[SBN_MAX_PACKED_MSG_SZ] = { 0 }, Payload[1] = { 0 };
     SBN_MsgSz_t        MsgSz;
     SBN_MsgType_t      MsgType;
     CFE_ProcessorID_t  ProcID;
@@ -2362,7 +2378,7 @@ static void Unpack_Nominal(void)
 
     UT_ResetState(0);
 
-    uint8              Buf[SBN_MAX_PACKED_MSG_SZ] = {0}, Payload[1] = {0};
+    uint8              Buf[SBN_MAX_PACKED_MSG_SZ] = { 0 }, Payload[1] = { 0 };
     uint8              TestData = 123;
     SBN_MsgSz_t        MsgSz;
     SBN_MsgType_t      MsgType;
@@ -2397,9 +2413,12 @@ void RecvNetMsgs_TaskRecv(void)
     UtAssert_INT32_EQ(SBN_RecvNetMsgs(), SBN_SUCCESS);
 } /* end RecvNetMsgs_TaskRecv() */
 
-static SBN_Status_t RecvFromNet_Empty(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                      CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                      void *PayloadBuffer)
+static SBN_Status_t RecvFromNet_Empty(SBN_NetInterface_t *Net,
+                                      SBN_MsgType_t      *MsgTypePtr,
+                                      SBN_MsgSz_t        *MsgSzPtr,
+                                      CFE_ProcessorID_t  *ProcessorIDPtr,
+                                      CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                      void               *PayloadBuffer)
 {
     *ProcessorIDPtr = 1235;
 
@@ -2495,9 +2514,13 @@ static void RecvPeerTask_NetConfErr(void)
     EVENT_CNT(1);
 } /* end RecvPeerTask_NetConfErr() */
 
-static SBN_Status_t RecvFromPeer_EmptyOne(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgType_t *MsgTypePtr,
-                                          SBN_MsgSz_t *MsgSzPtr, CFE_ProcessorID_t *ProcessorIDPtr,
-                                          CFE_SpacecraftID_t *SpacecraftIDPtr, void *PayloadBuffer)
+static SBN_Status_t RecvFromPeer_EmptyOne(SBN_NetInterface_t  *Net,
+                                          SBN_PeerInterface_t *Peer,
+                                          SBN_MsgType_t       *MsgTypePtr,
+                                          SBN_MsgSz_t         *MsgSzPtr,
+                                          CFE_ProcessorID_t   *ProcessorIDPtr,
+                                          CFE_SpacecraftID_t  *SpacecraftIDPtr,
+                                          void                *PayloadBuffer)
 {
     static int c = 0;
 
@@ -2528,9 +2551,13 @@ static void RecvPeerTask_Empty(void)
     IfOpsPtr->RecvFromPeer = NULL;
 } /* end RecvPeerTask_Empty() */
 
-static SBN_Status_t RecvFromPeer_One(SBN_NetInterface_t *Net, SBN_PeerInterface_t *Peer, SBN_MsgType_t *MsgTypePtr,
-                                     SBN_MsgSz_t *MsgSzPtr, CFE_ProcessorID_t *ProcessorIDPtr,
-                                     CFE_SpacecraftID_t *SpacecraftIDPtr, void *PayloadBuffer)
+static SBN_Status_t RecvFromPeer_One(SBN_NetInterface_t  *Net,
+                                     SBN_PeerInterface_t *Peer,
+                                     SBN_MsgType_t       *MsgTypePtr,
+                                     SBN_MsgSz_t         *MsgSzPtr,
+                                     CFE_ProcessorID_t   *ProcessorIDPtr,
+                                     CFE_SpacecraftID_t  *SpacecraftIDPtr,
+                                     void                *PayloadBuffer)
 {
     static int c = 0;
 
@@ -2586,9 +2613,12 @@ static void RecvNetTask_NetConfErr(void)
     EVENT_CNT(1);
 } /* end RecvNetTask_NetConfErr() */
 
-static SBN_Status_t RecvFromNet_EmptyOne(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                         CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                         void *PayloadBuffer)
+static SBN_Status_t RecvFromNet_EmptyOne(SBN_NetInterface_t *Net,
+                                         SBN_MsgType_t      *MsgTypePtr,
+                                         SBN_MsgSz_t        *MsgSzPtr,
+                                         CFE_ProcessorID_t  *ProcessorIDPtr,
+                                         CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                         void               *PayloadBuffer)
 {
     static int c = 0;
 
@@ -2616,9 +2646,12 @@ static void RecvNetTask_Empty(void)
     IfOpsPtr->RecvFromNet = RecvFromNet_Nominal;
 } /* end RecvNetTask_Empty() */
 
-static SBN_Status_t RecvFromNet_BadPeer(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                        CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                        void *PayloadBuffer)
+static SBN_Status_t RecvFromNet_BadPeer(SBN_NetInterface_t *Net,
+                                        SBN_MsgType_t      *MsgTypePtr,
+                                        SBN_MsgSz_t        *MsgSzPtr,
+                                        CFE_ProcessorID_t  *ProcessorIDPtr,
+                                        CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                        void               *PayloadBuffer)
 {
     *ProcessorIDPtr = 0;
 
@@ -2648,9 +2681,12 @@ static void RecvNetTask_PeerErr(void)
     IfOpsPtr->RecvFromNet = RecvFromNet_Nominal;
 } /* end RecvNetTask_PeerErr() */
 
-static SBN_Status_t RecvFromNet_One(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr, SBN_MsgSz_t *MsgSzPtr,
-                                    CFE_ProcessorID_t *ProcessorIDPtr, CFE_SpacecraftID_t *SpacecraftIDPtr,
-                                    void *PayloadBuffer)
+static SBN_Status_t RecvFromNet_One(SBN_NetInterface_t *Net,
+                                    SBN_MsgType_t      *MsgTypePtr,
+                                    SBN_MsgSz_t        *MsgSzPtr,
+                                    CFE_ProcessorID_t  *ProcessorIDPtr,
+                                    CFE_SpacecraftID_t *SpacecraftIDPtr,
+                                    void               *PayloadBuffer)
 {
     static int c = 0;
 
@@ -3016,9 +3052,13 @@ void Test_SBN_SendNetMsg(void)
     SendNetMsg_SendErr();
 } /* end Test_SBN_SendNetMsg() */
 
-void UT_Setup(void) {} /* end UT_Setup() */
+void UT_Setup(void)
+{
+} /* end UT_Setup() */
 
-void UT_TearDown(void) {} /* end UT_TearDown() */
+void UT_TearDown(void)
+{
+} /* end UT_TearDown() */
 
 void UtTest_Setup(void)
 {

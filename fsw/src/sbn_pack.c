@@ -80,29 +80,29 @@ bool Pack_MsgID(Pack_t *PackPtr, CFE_SB_MsgId_t Data)
     return Pack_Data(PackPtr, &D, sizeof(D));
 } /* end Pack_MsgID() */
 
-bool Unpack_Data(Pack_t *Pack, void *DataBuf, size_t Sz)
+bool Unpack_Data(Pack_t *PackPtr, void *DataBuf, size_t Sz)
 {
-    if (Pack->BufUsed + Sz > Pack->BufSz)
+    if (PackPtr->BufUsed + Sz > PackPtr->BufSz)
     {
         return false;
     }
 
-    memcpy(DataBuf, (uint8 *)Pack->Buf + Pack->BufUsed, Sz);
+    memcpy(DataBuf, (uint8 *)PackPtr->Buf + PackPtr->BufUsed, Sz);
 
-    Pack->BufUsed += Sz;
+    PackPtr->BufUsed += Sz;
 
     return true;
 } /* end Unpack_Data() */
 
-bool Unpack_UInt8(Pack_t *Pack, uint8 *DataBuf)
+bool Unpack_UInt8(Pack_t *PackPtr, uint8 *DataBuf)
 {
-    return Unpack_Data(Pack, DataBuf, sizeof(*DataBuf));
+    return Unpack_Data(PackPtr, DataBuf, sizeof(*DataBuf));
 } /* end Unpack_UInt8() */
 
-bool Unpack_UInt16(Pack_t *Pack, uint16 *DataBuf)
+bool Unpack_UInt16(Pack_t *PackPtr, uint16 *DataBuf)
 {
     uint16 D;
-    if (!Unpack_Data(Pack, &D, sizeof(D)))
+    if (!Unpack_Data(PackPtr, &D, sizeof(D)))
     {
         return false;
     }
@@ -110,10 +110,10 @@ bool Unpack_UInt16(Pack_t *Pack, uint16 *DataBuf)
     return true;
 } /* end Unpack_UInt16() */
 
-bool Unpack_Int16(Pack_t *Pack, int16 *DataBuf)
+bool Unpack_Int16(Pack_t *PackPtr, int16 *DataBuf)
 {
     int16 D;
-    if (!Unpack_Data(Pack, &D, sizeof(D)))
+    if (!Unpack_Data(PackPtr, &D, sizeof(D)))
     {
         return false;
     }
@@ -121,10 +121,10 @@ bool Unpack_Int16(Pack_t *Pack, int16 *DataBuf)
     return true;
 } /* end Unpack_Int16() */
 
-bool Unpack_UInt32(Pack_t *Pack, uint32 *DataBuf)
+bool Unpack_UInt32(Pack_t *PackPtr, uint32 *DataBuf)
 {
     uint32 D;
-    if (!Unpack_Data(Pack, &D, sizeof(D)))
+    if (!Unpack_Data(PackPtr, &D, sizeof(D)))
     {
         return false;
     }
@@ -132,10 +132,10 @@ bool Unpack_UInt32(Pack_t *Pack, uint32 *DataBuf)
     return true;
 } /* end Unpack_UInt32() */
 
-bool Unpack_Time(Pack_t *Pack, OS_time_t *DataBuf)
+bool Unpack_Time(Pack_t *PackPtr, OS_time_t *DataBuf)
 {
     OS_time_t D;
-    if (!Unpack_Data(Pack, &D, sizeof(D)))
+    if (!Unpack_Data(PackPtr, &D, sizeof(D)))
     {
         return false;
     }
@@ -143,10 +143,10 @@ bool Unpack_Time(Pack_t *Pack, OS_time_t *DataBuf)
     return true;
 } /* end Unpack_Time() */
 
-bool Unpack_MsgID(Pack_t *Pack, CFE_SB_MsgId_t *DataBuf)
+bool Unpack_MsgID(Pack_t *PackPtr, CFE_SB_MsgId_t *DataBuf)
 {
     uint32 D;
-    if (!Unpack_Data(Pack, &D, sizeof(D)))
+    if (!Unpack_Data(PackPtr, &D, sizeof(D)))
     {
         return false;
     }

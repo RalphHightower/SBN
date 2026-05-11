@@ -73,9 +73,13 @@ void Test_Pack(void)
     UtAssert_True(!Unpack_Time(&Pack, &T), "unpack time");
 } /* end Test_Pack() */
 
-void UT_Setup(void) {} /* end UT_Setup() */
+void UT_Setup(void)
+{
+} /* end UT_Setup() */
 
-void UT_TearDown(void) {} /* end UT_TearDown() */
+void UT_TearDown(void)
+{
+} /* end UT_TearDown() */
 
 void UtTest_Setup(void)
 {

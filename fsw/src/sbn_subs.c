@@ -30,11 +30,18 @@
  */
 SBN_Status_t SBN_SendSubsRequests(void)
 {
-    CFE_Status_t    CFE_Status = CFE_SUCCESS;
+    CFE_Status_t            CFE_Status;
     CFE_MSG_CommandHeader_t CmdMsg;
+    static CFE_SB_MsgId_t   SB_SUB_RPT_CTRL_MID = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(SB_SUB_RPT_CTRL_MID))
+    {
+        SB_SUB_RPT_CTRL_MID = CFE_SB_ValueToMsgId(CFE_SB_SUB_RPT_CTRL_MID);
+    }
 
     /* Turn on SB subscription reporting */
-    CFE_MSG_Init((CFE_MSG_Message_t *)&CmdMsg, CFE_SB_ValueToMsgId(CFE_SB_SUB_RPT_CTRL_MID), sizeof(CmdMsg));
+    CFE_MSG_Init((CFE_MSG_Message_t *)&CmdMsg, SB_SUB_RPT_CTRL_MID, sizeof(CmdMsg));
     CFE_MSG_SetFcnCode((CFE_MSG_Message_t *)&CmdMsg, CFE_SB_ENABLE_SUB_REPORTING_CC);
     CFE_Status = CFE_SB_TransmitMsg((CFE_MSG_Message_t *)&CmdMsg, true);
     if (CFE_Status != CFE_SUCCESS)
@@ -126,7 +133,7 @@ static int IsMsgIDSub(int *IdxPtr, CFE_SB_MsgId_t MsgID)
 
             return true;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     return false;
 } /* end IsMsgIDSub */
@@ -152,7 +159,7 @@ static int IsPeerSubMsgID(int *SubIdxPtr, CFE_SB_MsgId_t MsgID, SBN_PeerInterfac
             *SubIdxPtr = i;
             return true;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     return false;
 
@@ -167,18 +174,35 @@ static int IsPeerSubMsgID(int *SubIdxPtr, CFE_SB_MsgId_t MsgID, SBN_PeerInterfac
  */
 static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t          SBN_Status          = SBN_SUCCESS;
+    static CFE_SB_MsgId_t LCMD_MID            = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHK_TLM_MID         = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKNET_TLM_MID      = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKPEER_TLM_MID     = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKMYSUBS_TLM_MID   = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t LHKPEERSUBS_TLM_MID = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t EVENT_MSG_MID       = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(LCMD_MID))
+    {
+        LCMD_MID            = CFE_SB_ValueToMsgId(SBN_CMD_MID);
+        LHK_TLM_MID         = CFE_SB_ValueToMsgId(SBN_HK_TLM_MID);
+        LHKNET_TLM_MID      = CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID);
+        LHKPEER_TLM_MID     = CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID);
+        LHKMYSUBS_TLM_MID   = CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID);
+        LHKPEERSUBS_TLM_MID = CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID);
+        EVENT_MSG_MID       = CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID);
+    }
+
     /* don't send event messages */
-    if (CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(CFE_EVS_LONG_EVENT_MSG_MID)))
+    if (CFE_SB_MsgId_Equal(MsgID, EVENT_MSG_MID))
         return SBN_SUCCESS;
 
     /* don't send SBN messages */
-    if (CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_CMD_MID))
-            || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HK_TLM_MID))
-            || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKNET_TLM_MID))
-            || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKPEER_TLM_MID))
-            || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKMYSUBS_TLM_MID))
-            || CFE_SB_MsgId_Equal(MsgID, CFE_SB_ValueToMsgId(SBN_HKPEERSUBS_TLM_MID)))
+    if (CFE_SB_MsgId_Equal(MsgID, LCMD_MID) || CFE_SB_MsgId_Equal(MsgID, LHK_TLM_MID)
+        || CFE_SB_MsgId_Equal(MsgID, LHKNET_TLM_MID) || CFE_SB_MsgId_Equal(MsgID, LHKPEER_TLM_MID)
+        || CFE_SB_MsgId_Equal(MsgID, LHKMYSUBS_TLM_MID) || CFE_SB_MsgId_Equal(MsgID, LHKPEERSUBS_TLM_MID))
         return SBN_SUCCESS;
 
     int SubIdx = 0;
@@ -194,8 +218,10 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
 
     if (SBN.SubCnt >= SBN_MAX_SUBS_PER_PEER)
     {
-        EVSSendErr(SBN_SUB_EID, "local subscription ignored for MsgID 0x%04X, max (%d) met",
-            CFE_SB_MsgIdToValue(MsgID), SBN_MAX_SUBS_PER_PEER);
+        EVSSendErr(SBN_SUB_EID,
+                   "local subscription ignored for MsgID 0x%04X, max (%d) met",
+                   CFE_SB_MsgIdToValue(MsgID),
+                   SBN_MAX_SUBS_PER_PEER);
         return SBN_ERROR;
     } /* end if */
 
@@ -205,7 +231,8 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
     SBN.Subs[SBN.SubCnt].QoS      = QoS;
     SBN.SubCnt++;
 
-    int NetIdx = 0, PeerIdx = 0;
+    int NetIdx;
+    int PeerIdx;
     for (NetIdx = 0; NetIdx < SBN.NetCnt; NetIdx++)
     {
         SBN_NetInterface_t *Net = &SBN.Nets[NetIdx];
@@ -213,16 +240,19 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
         {
             SBN_PeerInterface_t *Peer = &Net->Peers[PeerIdx];
 
-            EVSSendDbg(SBN_PEER_EID, "process local sub for MID %#04x sending to %d:%d",
-                CFE_SB_MsgIdToValue(MsgID), Peer->SpacecraftID, Peer->ProcessorID);
+            EVSSendDbg(SBN_PEER_EID,
+                       "process local sub for MID %#04x sending to %d:%d",
+                       CFE_SB_MsgIdToValue(MsgID),
+                       Peer->SpacecraftID,
+                       Peer->ProcessorID);
             SBN_Status = SendLocalSubToPeer(SBN_SUB_MSG, MsgID, QoS, Peer);
 
             if (SBN_Status != SBN_SUCCESS)
             {
                 return SBN_Status;
             } /* end if */
-        }     /* end for */
-    }         /* end for */
+        } /* end for */
+    } /* end for */
 
     return SBN_Status;
 } /* end ProcessLocalSub */
@@ -235,14 +265,14 @@ static SBN_Status_t ProcessLocalSub(CFE_SB_MsgId_t MsgID, CFE_SB_Qos_t QoS)
  */
 static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t SBN_Status;
     int          SubIdx;
 
     /* find idx of matching subscription */
     if (!IsMsgIDSub(&SubIdx, MsgID))
     {
         return SBN_SUCCESS; /* or should this be error? */
-    }                       /* end if */
+    } /* end if */
 
     SBN.Subs[SubIdx].InUseCtr--;
 
@@ -268,7 +298,8 @@ static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
 
     /* send unsubscription to all peers if peer state is heartbeating and */
     /* only if no more local subs (InUseCtr = 0)  */
-    int NetIdx = 0, PeerIdx = 0;
+    int NetIdx;
+    int PeerIdx;
     for (NetIdx = 0; NetIdx < SBN.NetCnt; NetIdx++)
     {
         SBN_NetInterface_t *Net = &SBN.Nets[NetIdx];
@@ -283,8 +314,8 @@ static SBN_Status_t ProcessLocalUnsub(CFE_SB_MsgId_t MsgID)
             {
                 return SBN_Status;
             } /* end if */
-        }     /* end for */
-    }         /* end for */
+        } /* end for */
+    } /* end for */
 
     return SBN_SUCCESS;
 } /* end ProcessLocalUnsub */
@@ -299,9 +330,18 @@ SBN_Status_t SBN_CheckSubscriptionPipe(void)
 {
     CFE_Status_t CFE_Status = CFE_SUCCESS;
 
-    CFE_SB_AllSubscriptionsTlm_t *MsgPtr = NULL; /* largest message format */
+    CFE_SB_AllSubscriptionsTlm_t   *MsgPtr       = NULL; /* largest message format */
     CFE_SB_SingleSubscriptionTlm_t *SingleMsgPtr = NULL; /* utility "cast" */
-    CFE_SB_MsgId_t MsgId;
+    CFE_SB_MsgId_t                  MsgId;
+    static CFE_SB_MsgId_t           SB_ONESUB_TLM_MID  = CFE_SB_MSGID_RESERVED;
+    static CFE_SB_MsgId_t           SB_ALLSUBS_TLM_MID = CFE_SB_MSGID_RESERVED;
+
+    /* cache the local MID Values here, this avoids repeat lookups */
+    if (!CFE_SB_IsValidMsgId(SB_ONESUB_TLM_MID))
+    {
+        SB_ONESUB_TLM_MID  = CFE_SB_ValueToMsgId(CFE_SB_ONESUB_TLM_MID);
+        SB_ALLSUBS_TLM_MID = CFE_SB_ValueToMsgId(CFE_SB_ALLSUBS_TLM_MID);
+    }
 
     CFE_Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t **)&MsgPtr, SBN.SubPipe, CFE_SB_POLL);
     switch (CFE_Status)
@@ -314,7 +354,7 @@ SBN_Status_t SBN_CheckSubscriptionPipe(void)
                 return SBN_ERROR;
             }
 
-            if(CFE_SB_MsgId_Equal(MsgId, CFE_SB_ValueToMsgId(CFE_SB_ONESUB_TLM_MID)))
+            if (CFE_SB_MsgId_Equal(MsgId, SB_ONESUB_TLM_MID))
             {
                 SingleMsgPtr = (CFE_SB_SingleSubscriptionTlm_t *)MsgPtr;
                 switch (SingleMsgPtr->Payload.SubType)
@@ -324,19 +364,19 @@ SBN_Status_t SBN_CheckSubscriptionPipe(void)
                     case CFE_SB_UNSUBSCRIPTION:
                         return ProcessLocalUnsub(SingleMsgPtr->Payload.MsgId);
                     default:
-                        EVSSendErr(SBN_SUB_EID, "unexpected subscription type (%d) in SBN_CheckSubscriptionPipe",
-                            SingleMsgPtr->Payload.SubType);
+                        EVSSendErr(SBN_SUB_EID,
+                                   "unexpected subscription type (%d) in SBN_CheckSubscriptionPipe",
+                                   SingleMsgPtr->Payload.SubType);
                         return SBN_ERROR;
                 } /* end switch */
             }
-            else if(CFE_SB_MsgId_Equal(MsgId, CFE_SB_ValueToMsgId(CFE_SB_ALLSUBS_TLM_MID)))
+            else if (CFE_SB_MsgId_Equal(MsgId, SB_ALLSUBS_TLM_MID))
             {
                 return SBN_ProcessAllSubscriptions(MsgPtr);
             }
             else
             {
-                EVSSendErr(SBN_MSG_EID, "unexpected message id (0x%04X) on SBN.SubPipe",
-                   CFE_SB_MsgIdToValue(MsgId));
+                EVSSendErr(SBN_MSG_EID, "unexpected message id (0x%04X) on SBN.SubPipe", CFE_SB_MsgIdToValue(MsgId));
                 return SBN_ERROR;
             } /* end switch */
 
@@ -374,8 +414,10 @@ static SBN_Status_t AddSub(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t MsgID, CFE_
 
     if (Peer->SubCnt >= SBN_MAX_SUBS_PER_PEER)
     {
-        EVSSendErr(SBN_SUB_EID, "cannot process subscription from ProcessorID %d, max (%d) met",
-            Peer->ProcessorID, SBN_MAX_SUBS_PER_PEER);
+        EVSSendErr(SBN_SUB_EID,
+                   "cannot process subscription from ProcessorID %d, max (%d) met",
+                   Peer->ProcessorID,
+                   SBN_MAX_SUBS_PER_PEER);
         return SBN_ERROR;
     } /* end if */
 
@@ -383,8 +425,7 @@ static SBN_Status_t AddSub(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t MsgID, CFE_
     CFE_Status = CFE_SB_SubscribeLocal(MsgID, Peer->Pipe, SBN_DEFAULT_MSG_LIM);
     if (CFE_Status != CFE_SUCCESS)
     {
-        EVSSendErr(SBN_SUB_EID, "unable to subscribe to MID 0x%04X",
-            CFE_SB_MsgIdToValue(MsgID));
+        EVSSendErr(SBN_SUB_EID, "unable to subscribe to MID 0x%04X", CFE_SB_MsgIdToValue(MsgID));
         return SBN_ERROR;
     } /* end if */
 
@@ -412,10 +453,10 @@ static SBN_Status_t ProcessSubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t
     SBN_Filter_Ctx_t Filter_Context;
     SBN_Status_t     SBN_Status;
 
-    Filter_Context.MyProcessorID   = CFE_PSP_GetProcessorId();
-    Filter_Context.MySpacecraftID  = CFE_PSP_GetSpacecraftId();
-    Filter_Context.PeerProcessorID = Peer->ProcessorID;
-    Filter_Context.PeerSpacecraftID  = Peer->SpacecraftID;
+    Filter_Context.MyProcessorID    = CFE_PSP_GetProcessorId();
+    Filter_Context.MySpacecraftID   = CFE_PSP_GetSpacecraftId();
+    Filter_Context.PeerProcessorID  = Peer->ProcessorID;
+    Filter_Context.PeerSpacecraftID = Peer->SpacecraftID;
 
     for (FilterIdx = 0; FilterIdx < Peer->FilterCnt; FilterIdx++)
     {
@@ -430,7 +471,7 @@ static SBN_Status_t ProcessSubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t
         {
             return SBN_Status;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     return AddSub(Peer, MsgID, QoS);
 } /* ProcessSubFromPeer */
@@ -445,7 +486,7 @@ static SBN_Status_t ProcessSubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId_t
  */
 SBN_Status_t SBN_ProcessSubsFromPeer(SBN_PeerInterface_t *Peer, void *Msg)
 {
-    SBN_Status_t SBN_Status = SBN_SUCCESS;
+    SBN_Status_t SBN_Status;
     Pack_t       Pack;
     char         VersionHash[SBN_IDENT_LEN];
 
@@ -476,7 +517,7 @@ SBN_Status_t SBN_ProcessSubsFromPeer(SBN_PeerInterface_t *Peer, void *Msg)
         {
             return SBN_Status;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     return SBN_SUCCESS;
 } /* SBN_ProcessSubsFromPeer */
@@ -498,10 +539,10 @@ static SBN_Status_t ProcessUnsubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId
 
     int i = 0, idx = 0;
 
-    Filter_Context.MyProcessorID   = CFE_PSP_GetProcessorId();
-    Filter_Context.MySpacecraftID  = CFE_PSP_GetSpacecraftId();
-    Filter_Context.PeerProcessorID = Peer->ProcessorID;
-    Filter_Context.PeerSpacecraftID  = Peer->SpacecraftID;
+    Filter_Context.MyProcessorID    = CFE_PSP_GetProcessorId();
+    Filter_Context.MySpacecraftID   = CFE_PSP_GetSpacecraftId();
+    Filter_Context.PeerProcessorID  = Peer->ProcessorID;
+    Filter_Context.PeerSpacecraftID = Peer->SpacecraftID;
 
     for (FilterIdx = 0; FilterIdx < Peer->FilterCnt; FilterIdx++)
     {
@@ -517,12 +558,14 @@ static SBN_Status_t ProcessUnsubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId
             /* assume the filter generated an event */
             return SBN_Status;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     if (!IsPeerSubMsgID(&idx, MsgID, Peer))
     {
-        EVSSendInfo(SBN_SUB_EID, "cannot process unsubscription from ProcessorID %d, msg 0x%04X not found",
-            Peer->ProcessorID, CFE_SB_MsgIdToValue(MsgID));
+        EVSSendInfo(SBN_SUB_EID,
+                    "cannot process unsubscription from ProcessorID %d, msg 0x%04X not found",
+                    Peer->ProcessorID,
+                    CFE_SB_MsgIdToValue(MsgID));
         return SBN_SUCCESS;
     } /* end if */
 
@@ -542,8 +585,7 @@ static SBN_Status_t ProcessUnsubFromPeer(SBN_PeerInterface_t *Peer, CFE_SB_MsgId
     /* unsubscribe to the msg id on the peer pipe */
     if ((CFE_Status = CFE_SB_UnsubscribeLocal(MsgID, Peer->Pipe)) != CFE_SUCCESS)
     {
-        EVSSendErr(SBN_SUB_EID, "unable to unsubscribe from MID 0x%04X: %d",
-            CFE_SB_MsgIdToValue(MsgID), CFE_Status);
+        EVSSendErr(SBN_SUB_EID, "unable to unsubscribe from MID 0x%04X: %d", CFE_SB_MsgIdToValue(MsgID), CFE_Status);
         return SBN_ERROR;
     } /* end if */
 
@@ -585,7 +627,7 @@ SBN_Status_t SBN_ProcessUnsubsFromPeer(SBN_PeerInterface_t *Peer, void *Msg)
         Unpack_Data(&Pack, &QoS, sizeof(QoS));
 
         ProcessUnsubFromPeer(Peer, MsgID); /* ignore return value, I want to unsub as much as I can */
-    }                                      /* end for */
+    } /* end for */
 
     return SBN_SUCCESS;
 } /* end SBN_ProcessUnsubsFromPeer() */
@@ -605,13 +647,14 @@ SBN_Status_t SBN_ProcessAllSubscriptions(CFE_SB_AllSubscriptionsTlm_t *Ptr)
 
     if (Ptr->Payload.Entries > CFE_MISSION_SB_SUB_ENTRIES_PER_PKT)
     {
-        EVSSendErr(SBN_SUB_EID, "entries value %d in SB PrevSubMsg exceeds max %d, aborting", (int)Ptr->Payload.Entries,
+        EVSSendErr(SBN_SUB_EID,
+                   "entries value %d in SB PrevSubMsg exceeds max %d, aborting",
+                   (int)Ptr->Payload.Entries,
                    CFE_MISSION_SB_SUB_ENTRIES_PER_PKT);
         return SBN_ERROR;
     } /* end if */
 
     EVSSendInfo(SBN_SUB_EID, "Processing all subscriptions...");
-
 
     for (i = 0; i < Ptr->Payload.Entries; i++)
     {
@@ -620,7 +663,7 @@ SBN_Status_t SBN_ProcessAllSubscriptions(CFE_SB_AllSubscriptionsTlm_t *Ptr)
         {
             return SBN_Status;
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     return SBN_Status;
 } /* end SBN_ProcessAllSubscriptions */
@@ -635,8 +678,8 @@ SBN_Status_t SBN_ProcessAllSubscriptions(CFE_SB_AllSubscriptionsTlm_t *Ptr)
  */
 SBN_Status_t SBN_RemoveAllSubsFromPeer(SBN_PeerInterface_t *Peer)
 {
-    int          i          = 0;
-    CFE_Status_t CFE_Status = CFE_SUCCESS;
+    int          i = 0;
+    CFE_Status_t CFE_Status;
 
     for (i = 0; i < Peer->SubCnt; i++)
     {
@@ -644,11 +687,13 @@ SBN_Status_t SBN_RemoveAllSubsFromPeer(SBN_PeerInterface_t *Peer)
         CFE_Status = CFE_SB_UnsubscribeLocal(Peer->Subs[i].MsgID, Peer->Pipe);
         if (CFE_Status != CFE_SUCCESS && CFE_Status != CFE_SB_BAD_ARGUMENT)
         {
-            EVSSendErr(SBN_SUB_EID, "unable to unsubscribe from message id 0x%04X: 0x%08X",
-                CFE_SB_MsgIdToValue(Peer->Subs[i].MsgID), CFE_Status);
+            EVSSendErr(SBN_SUB_EID,
+                       "unable to unsubscribe from message id 0x%04X: 0x%08X",
+                       CFE_SB_MsgIdToValue(Peer->Subs[i].MsgID),
+                       CFE_Status);
             /* but continue processing... */
         } /* end if */
-    }     /* end for */
+    } /* end for */
 
     EVSSendInfo(SBN_SUB_EID, "unsubscribed %d message id's from ProcessorID %d", (int)Peer->SubCnt, Peer->ProcessorID);
 

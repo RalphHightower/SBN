@@ -50,7 +50,7 @@
 
 typedef struct
 {
-    void * Buf;
+    void  *Buf;
     size_t BufSz, BufUsed;
 } Pack_t;
 
